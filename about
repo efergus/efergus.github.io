@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style/main.css">
+    <link rel="icon" href="./icon.png">
+    <script src="./scripts/main.js"></script>
+    <title>About missingchip.com</title>
+</head>
+
+<body>
+    <header>
+        <div class = "name horizontal apart primary-dark">
+            <h class="sturdy"><b>Ethan Ferguson</b></h>
+            <div class="horizontal nw apart">
+                <p>8438 Indian Hill Rd<br>Manlius, NY 13104<br>
+                <b><a href=Tel:(315)-559-6208>(315)-559-6208</a><br><a href=mailto:ethanmferguson@gmail.com>ethanmferguson@gmail.com</a></b>
+                </p>
+                <div class="spacer"></div>
+            </div>
+        </div>
+    </header>
+    <div class = "sticky primary-light" style="z-index:100;top:-5px;">
+        <div class = "menu horizontal">
+            <a href="./">Home</a>
+            <a href="./images/Resume.pdf">R&eacutesum&eacute</a>
+            <a href="./experience">Experience</a>
+            <a href="./photography">Photography</a>
+            <a href="./art">Art</a>
+            <a href="./scouting">Scouting</a>
+            <a href="./about" class="active">About this website</a>
+        </div>
+        </div>
+    </div>
+    <div class="horizontal center pad">
+        <div>
+            <div class="jack">
+            </div>
+            <div class="text" style="margin:10px 6vw 30px 6vw;">
+                <h>About missingchip.com</h>
+                <p>This website is hosted on a Raspberry Pi in my Binghamton dorm room. It runs Raspbian Lite as an Apache web server. All the HTML and CSS is made by me, from scratch. I purchased the domain through hover, and their DNS server is pointed via a CNAME record to a dynamic DNS solution provided by No-IP. The website is updated through some scripts I wrote for myself. I made this website to experiment with networking and web design, and because I wanted a website to showcase my work. Is this the most efficient and easy way to have a personal website? Absolutely not. It is, however, much more fun and educational than less exploration-heavy alternatives.</p>
+            </div>
+        </div>
+        <img src="./images/about/Pi.jpg" style="margin:30px 6vw 30px 6vw;max-width:700px;"></img>
+    </div>
+</body>

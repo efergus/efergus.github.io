@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style/main.css">
+    <link rel="icon" href="./icon.png">
+    <script src="./scripts/main.js"></script>
+    <title>Art</title>
+</head>
+
+<body class="vertical-nw" id="full">
+    <header>
+        <div class = "name horizontal apart primary-dark">
+            <h class="sturdy"><b>Ethan Ferguson</b></h>
+            <div class="horizontal nw apart">
+                <p>8438 Indian Hill Rd<br>Manlius, NY 13104<br>
+                <b><a href=Tel:(315)-559-6208>(315)-559-6208</a><br><a href=mailto:ethanmferguson@gmail.com>ethanmferguson@gmail.com</a></b>
+                </p>
+                <div class="spacer"></div>
+            </div>
+        </div>
+    </header>
+    <div class = "sticky primary-light" style="z-index:100;top:-5px;">
+        <div class = "menu horizontal">
+            <a href="./">Home</a>
+            <a href="./images/Resume.pdf">R&eacutesum&eacute</a>
+            <a href="./experience">Experience</a>
+            <a href="./photography">Photography</a>
+            <a href="./art" class="active">Art</a>
+            <a href="./scouting">Scouting</a>
+            <a href="./about">About this website</a>
+        </div>
+    </div>
+    <div class="horizontal photo_gallery left">
+        <div class="pad"><div class="text"><h>My Art</h>
+        <p>I have done art for a couple of years, and these are some of my favorites. The first five are oil paintings, the next two Charcoal, the last two ink on paper.</p>
+        </div></div>
+        <img src="./images/art/Ear.jpg"></img>
+        <img src="./images/art/Nose.jpg" class="landscape pos-bottom"></img>
+        <img src="./images/art/Hand.jpg" class="landscape"></img>
+        <img src="./images/art/Ear2.jpg"></img>
+        <img src="./images/art/Nose2.jpg"></img>
+        <img src="./images/art/Tie.jpg" class="landscape"></img>
+        <img src="./images/art/Mail.jpg" class="portrait pos-top"></img>
+        <img src="./images/art/Liberty.jpg" class="landscape pos-top"></img>
+        <img src="./images/art/Parts.jpg"></img>
+    </div>
+</body>
