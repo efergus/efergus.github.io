@@ -1,0 +1,31 @@
+
+.wide {
+    width: 100%;
+}
+.center {
+    display: flex;
+    justify-content: center;
+}
+*{
+    color: white;
+    cursor: default;
+    background-color: black;
+    text-align: center;
+} 
+
+.large {
+    font-size: 120px;
+}
+.medium {
+    font-size: 80px;
+}
+.small {
+    font-size: 60px;
+}
+.mini {
+    font-size: 20px;
+}
+
+.tiny {
+    font-size: 12px;
+}
