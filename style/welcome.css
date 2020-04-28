@@ -1,0 +1,23 @@
+
+body.dark {
+    background-color: black;
+}
+
+#welcome {
+    color: white;
+    font-size: 120px;
+    font-family: Georgia, serif;
+    width: 100%;
+    margin-top: 16%;
+    margin-bottom: 0%;
+    text-align: center;
+}
+
+p.explore {
+    color: white;
+    font-size: 74px;
+    font-family: Georgia, serif;
+    width: 100%;
+    margin-top: 4%;
+    text-align: center;
+}
