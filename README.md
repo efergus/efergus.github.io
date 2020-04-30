@@ -1,1 +1,1 @@
-[the website](missingchip.com)
+[missingchip.com](http://missingchip.com)
