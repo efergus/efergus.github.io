@@ -1,3 +1,4 @@
+# VIM
 
 I try to keep thinbgs pretty simple with what I change in vim, and avoid plugins for simplicity
 
