@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>My .vimrc</title>
+        <style>
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+        
+    </head>
+    <body class="vscode-light">
+        <p>I try to keep thinbgs pretty simple with what I change in vim, and avoid plugins for simplicity</p>
+<h2 id="my-vimrc">My .vimrc</h2>
+<pre><code class="language-vim"><div><span class="hljs-comment">" turn on syntax highlighting</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">on</span>
+
+<span class="hljs-comment">" turn on mouse</span>
+<span class="hljs-keyword">set</span> mouse=<span class="hljs-keyword">a</span>
+<span class="hljs-comment">" tab spacing</span>
+<span class="hljs-keyword">set</span> tabstop=<span class="hljs-number">4</span>
+<span class="hljs-keyword">set</span> <span class="hljs-built_in">shiftwidth</span>=<span class="hljs-number">4</span>
+<span class="hljs-keyword">set</span> autoindent
+
+<span class="hljs-comment">" automatically change directory to current file</span>
+<span class="hljs-keyword">set</span> autochdir
+
+<span class="hljs-comment">" color scheme</span>
+<span class="hljs-keyword">colorscheme</span> slate 
+<span class="hljs-comment">"	set background=dark</span>
+<span class="hljs-comment">" ctermbg=0 (black) shows up as grey in my terminal</span>
+<span class="hljs-comment">" this sets background to pure black</span>
+<span class="hljs-keyword">highlight</span> Normal ctermbg=<span class="hljs-number">16</span>
+
+<span class="hljs-comment">" show line numbers</span>
+<span class="hljs-keyword">set</span> <span class="hljs-keyword">nu</span>
+<span class="hljs-comment">" line number color</span>
+<span class="hljs-keyword">highlight</span> LineNr ctermfg=grey
+
+<span class="hljs-comment">" completion - use with &lt;C-X&gt;&lt;C-O&gt;</span>
+<span class="hljs-keyword">filetype</span> plugin <span class="hljs-keyword">on</span>
+<span class="hljs-keyword">set</span> omnifunc=syntaxcomplete#Complete
+<span class="hljs-comment">" this is for &lt;C-N&gt; or &lt;C-P&gt; completion</span>
+<span class="hljs-keyword">set</span> completeopt=longest,menuone
+
+<span class="hljs-comment">" highlight function calls (currently in ~/.vim/syntax)</span>
+<span class="hljs-string">" syn match dFunction "</span>\zs\(\<span class="hljs-keyword">k</span>\<span class="hljs-keyword">w</span>*\)*\s*\ze(<span class="hljs-comment">"</span>
+<span class="hljs-comment">" hi link dFunction Function</span>
+</div></code></pre>
+<h2 id="cc-syntax-highlighting-in-vimsyntaxcvim">C/C++ syntax highlighting in <code>~/.vim/syntax/c.vim</code></h2>
+<pre><code class="language-vim"><div>
+<span class="hljs-comment">" Highlight Class and Function names</span>
+syn <span class="hljs-keyword">match</span>    cCustomParen    <span class="hljs-string">"("</span> contains=cParen,cCppParen
+syn <span class="hljs-keyword">match</span>    cCustomFunc     <span class="hljs-string">"\w\+\s*("</span> contains=cCustomParen
+syn <span class="hljs-keyword">match</span>    cCustomScope    <span class="hljs-string">"::"</span>
+syn <span class="hljs-keyword">match</span>    cCustomClass    <span class="hljs-string">"\w\+\s*::"</span> contains=cCustomScope
+syn <span class="hljs-keyword">match</span>    cCustomDotAccess    <span class="hljs-string">"\v[a-zA-Z][_a-zA-Z0-9]{-}\ze\.\w"</span>
+
+<span class="hljs-comment">" Operators</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*"</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/"</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+"</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-"</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\="</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\!"</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*\="</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/\="</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+\="</span>
+<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-\="</span>
+
+<span class="hljs-keyword">highlight</span> link cOperator Operator
+
+<span class="hljs-keyword">hi</span> def link cCustomFunc  Function
+<span class="hljs-keyword">hi</span> def link cCustomClass cStructure
+<span class="hljs-keyword">hi</span> def link cCustomDotAccess cStructure
+</div></code></pre>
+
+    </body>
+    </html>
