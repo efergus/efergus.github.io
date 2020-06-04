@@ -41,7 +41,7 @@ set completeopt=longest,menuone
 " hi link dFunction Function
 ```
 
-## C/C++ syntax highlighting in `~/.vim/syntax/c.vim`
+## C/C++ syntax highlighting in *`~/.vim/syntax/c.vim`*
 
 ```vim
 
@@ -53,16 +53,16 @@ syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
 syn match    cCustomDotAccess    "\v[a-zA-Z][_a-zA-Z0-9]{-}\ze\.\w"
 
 " Operators
-syntax match cOperator "\v\*"
-syntax match cOperator "\v/"
-syntax match cOperator "\v\+"
-syntax match cOperator "\v-"
-syntax match cOperator "\v\="
-syntax match cOperator "\v\!"
-syntax match cOperator "\v\*\="
-syntax match cOperator "\v/\="
-syntax match cOperator "\v\+\="
-syntax match cOperator "\v-\="
+syn match cOperator "\v/"
+syn match cOperator "\v\+"
+syn match cOperator "\v-"
+syn match cOperator "\v\="
+syn match cOperator "\v\*"
+syn match cOperator "\v\!"
+syn match cOperator "\v\*\="
+syn match cOperator "\v/\="
+syn match cOperator "\v\+\="
+syn match cOperator "\v-\="
 
 highlight link cOperator Operator
 

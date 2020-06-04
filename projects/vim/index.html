@@ -23,7 +23,7 @@
         
         
     </head>
-    <body class="primary-white">
+    <body class="vscode-light">
         <h1 id="vim">VIM</h1>
 <p>I try to keep thinbgs pretty simple with what I change in vim, and avoid plugins for simplicity</p>
 <h2 id="my-vimrc">My .vimrc</h2>
@@ -62,7 +62,7 @@
 <span class="hljs-string">" syn match dFunction "</span>\zs\(\<span class="hljs-keyword">k</span>\<span class="hljs-keyword">w</span>*\)*\s*\ze(<span class="hljs-comment">"</span>
 <span class="hljs-comment">" hi link dFunction Function</span>
 </div></code></pre>
-<h2 id="cc-syntax-highlighting-in-vimsyntaxcvim">C/C++ syntax highlighting in <code>~/.vim/syntax/c.vim</code></h2>
+<h2 id="cc-syntax-highlighting-in-vimsyntaxcvim">C/C++ syntax highlighting in <em><code>~/.vim/syntax/c.vim</code></em></h2>
 <pre><code class="language-vim"><div>
 <span class="hljs-comment">" Highlight Class and Function names</span>
 syn <span class="hljs-keyword">match</span>    cCustomParen    <span class="hljs-string">"("</span> contains=cParen,cCppParen
@@ -72,16 +72,16 @@ syn <span class="hljs-keyword">match</span>    cCustomClass    <span class="hljs
 syn <span class="hljs-keyword">match</span>    cCustomDotAccess    <span class="hljs-string">"\v[a-zA-Z][_a-zA-Z0-9]{-}\ze\.\w"</span>
 
 <span class="hljs-comment">" Operators</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*"</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/"</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+"</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-"</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\="</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\!"</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*\="</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/\="</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+\="</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-\="</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/"</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+"</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-"</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\="</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*"</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\!"</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*\="</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/\="</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+\="</span>
+syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-\="</span>
 
 <span class="hljs-keyword">highlight</span> link cOperator Operator
 
