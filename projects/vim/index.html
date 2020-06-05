@@ -37,30 +37,43 @@
 <span class="hljs-keyword">set</span> <span class="hljs-built_in">shiftwidth</span>=<span class="hljs-number">4</span>
 <span class="hljs-keyword">set</span> autoindent
 
-<span class="hljs-comment">" automatically change directory to current file</span>
+<span class="hljs-comment">" change directory to current file</span>
 <span class="hljs-keyword">set</span> autochdir
+<span class="hljs-comment">"show some commands vim usually doesn't show</span>
+<span class="hljs-keyword">set</span> showcmd
+<span class="hljs-comment">"remap leader key to space for convenience</span>
+<span class="hljs-keyword">let</span> mapleader = <span class="hljs-string">"\&lt;Space&gt;"</span>
 
-<span class="hljs-comment">" color scheme</span>
 <span class="hljs-keyword">colorscheme</span> slate 
-<span class="hljs-comment">"	set background=dark</span>
 <span class="hljs-comment">" ctermbg=0 (black) shows up as grey in my terminal</span>
 <span class="hljs-comment">" this sets background to pure black</span>
 <span class="hljs-keyword">highlight</span> Normal ctermbg=<span class="hljs-number">16</span>
-
-<span class="hljs-comment">" show line numbers</span>
+<span class="hljs-comment">" line numbering</span>
 <span class="hljs-keyword">set</span> <span class="hljs-keyword">nu</span>
-<span class="hljs-comment">" line number color</span>
 <span class="hljs-keyword">highlight</span> LineNr ctermfg=grey
 
 <span class="hljs-comment">" completion - use with &lt;C-X&gt;&lt;C-O&gt;</span>
 <span class="hljs-keyword">filetype</span> plugin <span class="hljs-keyword">on</span>
 <span class="hljs-keyword">set</span> omnifunc=syntaxcomplete#Complete
-<span class="hljs-comment">" this is for &lt;C-N&gt; or &lt;C-P&gt; completion</span>
 <span class="hljs-keyword">set</span> completeopt=longest,menuone
+<span class="hljs-comment">" command completion</span>
+<span class="hljs-keyword">set</span> wildmenu
+<span class="hljs-keyword">set</span> wildmode=longes<span class="hljs-variable">t:full</span>,full
 
-<span class="hljs-comment">" highlight function calls (currently in ~/.vim/syntax)</span>
-<span class="hljs-string">" syn match dFunction "</span>\zs\(\<span class="hljs-keyword">k</span>\<span class="hljs-keyword">w</span>*\)*\s*\ze(<span class="hljs-comment">"</span>
-<span class="hljs-comment">" hi link dFunction Function</span>
+<span class="hljs-comment">"remap tab to &lt;:&gt; in normal mode</span>
+<span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;Tab&gt;</span> :
+<span class="hljs-comment">"remap H and L for tab switching</span>
+<span class="hljs-keyword">nnoremap</span> H gT
+<span class="hljs-keyword">nnoremap</span> L gt
+<span class="hljs-comment">" gT - tab left</span>
+<span class="hljs-comment">" gt - tab right</span>
+<span class="hljs-comment">" :tabe &lt;file&gt; opens a new tab, :tabc closes a tab</span>
+<span class="hljs-comment">"remap U to redo</span>
+<span class="hljs-keyword">nnoremap</span> U <span class="hljs-symbol">&lt;C-r&gt;</span>
+<span class="hljs-comment">"remap visual mode Ctrl+Shift+C to copy to clipboard</span>
+<span class="hljs-string">"nnoremap &lt;C-S-c&gt; "</span>+yi
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-keyword">y</span> <span class="hljs-comment">"+y</span>
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-keyword">p</span> <span class="hljs-comment">"+p</span>
 </div></code></pre>
 <h2 id="cc-syntax-highlighting-in-vimsyntaxcvim">C/C++ syntax highlighting in <em><code>~/.vim/syntax/c.vim</code></em></h2>
 <pre><code class="language-vim"><div>
@@ -78,17 +91,4 @@ syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">
 syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\="</span>
 syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*"</span>
 syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\!"</span>
-syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\*\="</span>
-syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v/\="</span>
-syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v\+\="</span>
-syn <span class="hljs-keyword">match</span> cOperator <span class="hljs-string">"\v-\="</span>
-
-<span class="hljs-keyword">highlight</span> link cOperator Operator
-
-<span class="hljs-keyword">hi</span> def link cCustomFunc  Function
-<span class="hljs-keyword">hi</span> def link cCustomClass cStructure
-<span class="hljs-keyword">hi</span> def link cCustomDotAccess cStructure
-</div></code></pre>
-
-    </body>
-    </html>
+syn <span c

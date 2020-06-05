@@ -15,30 +15,43 @@ set tabstop=4
 set shiftwidth=4
 set autoindent
 
-" automatically change directory to current file
+" change directory to current file
 set autochdir
+"show some commands vim usually doesn't show
+set showcmd
+"remap leader key to space for convenience
+let mapleader = "\<Space>"
 
-" color scheme
 colorscheme slate 
-"	set background=dark
 " ctermbg=0 (black) shows up as grey in my terminal
 " this sets background to pure black
 highlight Normal ctermbg=16
-
-" show line numbers
+" line numbering
 set nu
-" line number color
 highlight LineNr ctermfg=grey
 
 " completion - use with <C-X><C-O>
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
-" this is for <C-N> or <C-P> completion
 set completeopt=longest,menuone
+" command completion
+set wildmenu
+set wildmode=longest:full,full
 
-" highlight function calls (currently in ~/.vim/syntax)
-" syn match dFunction "\zs\(\k\w*\)*\s*\ze("
-" hi link dFunction Function
+"remap tab to <:> in normal mode
+nnoremap <Tab> :
+"remap H and L for tab switching
+nnoremap H gT
+nnoremap L gt
+" gT - tab left
+" gt - tab right
+" :tabe <file> opens a new tab, :tabc closes a tab
+"remap U to redo
+nnoremap U <C-r>
+"remap visual mode Ctrl+Shift+C to copy to clipboard
+"nnoremap <C-S-c> "+yi
+noremap <Leader>y "+y
+noremap <Leader>p "+p
 ```
 
 ## C/C++ syntax highlighting in *`~/.vim/syntax/c.vim`*
