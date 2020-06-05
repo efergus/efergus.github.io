@@ -48,8 +48,7 @@ nnoremap L gt
 " :tabe <file> opens a new tab, :tabc closes a tab
 "remap U to redo
 nnoremap U <C-r>
-"remap visual mode Ctrl+Shift+C to copy to clipboard
-"nnoremap <C-S-c> "+yi
+"map space,y to copy to clipboard
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 ```
