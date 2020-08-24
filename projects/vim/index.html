@@ -5,74 +5,81 @@
         <title>VIM</title>
         <style>
 </style>
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
-        
-        <style>
-.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
-</style>
-        <style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
             body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
                 font-size: 14px;
                 line-height: 1.6;
             }
         </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
         
-        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
         
     </head>
     <body class="vscode-light">
         <h1 id="vim">VIM</h1>
 <p>I try to keep thinbgs pretty simple with what I change in vim, and avoid plugins for simplicity</p>
 <h2 id="my-vimrc">My .vimrc</h2>
-<pre><code class="language-vim"><div><span class="hljs-comment">" turn on syntax highlighting</span>
-<span class="hljs-keyword">syntax</span> <span class="hljs-keyword">on</span>
-
-<span class="hljs-comment">" turn on mouse</span>
+<pre><code class="language-vim"><div><span class="hljs-comment">" turn on mouse</span>
 <span class="hljs-keyword">set</span> mouse=<span class="hljs-keyword">a</span>
 <span class="hljs-comment">" tab spacing</span>
 <span class="hljs-keyword">set</span> tabstop=<span class="hljs-number">4</span>
 <span class="hljs-keyword">set</span> <span class="hljs-built_in">shiftwidth</span>=<span class="hljs-number">4</span>
 <span class="hljs-keyword">set</span> autoindent
 
-<span class="hljs-comment">" change directory to current file</span>
-<span class="hljs-keyword">set</span> autochdir
-<span class="hljs-comment">"show some commands vim usually doesn't show</span>
-<span class="hljs-keyword">set</span> showcmd
 <span class="hljs-comment">"remap leader key to space for convenience</span>
 <span class="hljs-keyword">let</span> mapleader = <span class="hljs-string">"\&lt;Space&gt;"</span>
 
-<span class="hljs-keyword">colorscheme</span> slate 
-<span class="hljs-comment">" ctermbg=0 (black) shows up as grey in my terminal</span>
-<span class="hljs-comment">" this sets background to pure black</span>
-<span class="hljs-keyword">highlight</span> Normal ctermbg=<span class="hljs-number">16</span>
-<span class="hljs-comment">" line numbering</span>
-<span class="hljs-keyword">set</span> <span class="hljs-keyword">nu</span>
-<span class="hljs-keyword">highlight</span> LineNr ctermfg=grey
-
-<span class="hljs-comment">" completion - use with &lt;C-X&gt;&lt;C-O&gt;</span>
-<span class="hljs-keyword">filetype</span> plugin <span class="hljs-keyword">on</span>
-<span class="hljs-keyword">set</span> omnifunc=syntaxcomplete#Complete
-<span class="hljs-keyword">set</span> completeopt=longest,menuone
-<span class="hljs-comment">" command completion</span>
+<span class="hljs-comment">" some completion configurations</span>
 <span class="hljs-keyword">set</span> wildmenu
 <span class="hljs-keyword">set</span> wildmode=longes<span class="hljs-variable">t:full</span>,full
 
-<span class="hljs-comment">"remap tab to &lt;:&gt; in normal mode</span>
-<span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;Tab&gt;</span> :
-<span class="hljs-comment">"remap H and L for tab switching</span>
-<span class="hljs-keyword">nnoremap</span> H gT
-<span class="hljs-keyword">nnoremap</span> L gt
-<span class="hljs-comment">" gT - tab left</span>
-<span class="hljs-comment">" gt - tab right</span>
-<span class="hljs-comment">" :tabe &lt;file&gt; opens a new tab, :tabc closes a tab</span>
+<span class="hljs-comment">" set compund line numbering</span>
+<span class="hljs-keyword">set</span> <span class="hljs-keyword">number</span> relativenumber
+
+<span class="hljs-comment">" Faster motions with &lt;Shift&gt;</span>
+<span class="hljs-keyword">noremap</span> H <span class="hljs-number">5</span>h
+<span class="hljs-keyword">noremap</span> L <span class="hljs-number">5</span><span class="hljs-keyword">l</span>
+<span class="hljs-keyword">noremap</span> J <span class="hljs-number">3</span><span class="hljs-keyword">j</span>
+<span class="hljs-keyword">noremap</span> K <span class="hljs-number">3</span><span class="hljs-keyword">k</span>
+<span class="hljs-keyword">noremap</span> W <span class="hljs-number">3</span><span class="hljs-keyword">w</span>
+<span class="hljs-keyword">noremap</span> B <span class="hljs-number">3</span><span class="hljs-keyword">b</span>
+
+<span class="hljs-comment">" C-s to save</span>
+<span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;C-s&gt;</span> :<span class="hljs-keyword">w</span><span class="hljs-symbol">&lt;CR&gt;</span>
+<span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-symbol">&lt;C-s&gt;</span> :<span class="hljs-keyword">write</span>
+<span class="hljs-keyword">inoremap</span> <span class="hljs-symbol">&lt;C-s&gt;</span> <span class="hljs-symbol">&lt;C-o&gt;</span>:<span class="hljs-keyword">w</span><span class="hljs-symbol">&lt;CR&gt;</span>
+
+<span class="hljs-comment">" remap ; to : and : to ;</span>
+<span class="hljs-comment">"	not sure if I like it yet</span>
+<span class="hljs-keyword">noremap</span> ; :
+<span class="hljs-keyword">noremap</span> : ;
+
 <span class="hljs-comment">"remap U to redo</span>
 <span class="hljs-keyword">nnoremap</span> U <span class="hljs-symbol">&lt;C-r&gt;</span>
-<span class="hljs-comment">"map space,y to copy to clipboard</span>
+
+<span class="hljs-comment">" &lt;Space&gt;y to copy to clipboard, &lt;Space&gt;p to paste from clipboard, &lt;Space&gt;d to cut to clipboard</span>
 <span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-keyword">y</span> <span class="hljs-comment">"+y</span>
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span>d <span class="hljs-comment">"+d</span>
 <span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-keyword">p</span> <span class="hljs-comment">"+p</span>
+<span class="hljs-comment">" &lt;Space&gt;Y to copy to end of line to clipboard (Y yank to end of line)</span>
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span>Y <span class="hljs-comment">"+y$</span>
+<span class="hljs-keyword">noremap</span> Y <span class="hljs-keyword">y</span>$
+<span class="hljs-comment">" &lt;Space&gt;D to cut to end of line to clipboard</span>
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span>D <span class="hljs-comment">"+D</span>
+<span class="hljs-comment">" &lt;Space&gt;P to paste before cursor from clipboard</span>
+<span class="hljs-keyword">noremap</span> <span class="hljs-symbol">&lt;Leader&gt;</span><span class="hljs-keyword">P</span> <span class="hljs-comment">"+P</span>
+
+<span class="hljs-comment">" Backspace works in normal and visual mode</span>
+<span class="hljs-keyword">nnoremap</span> <span class="hljs-symbol">&lt;BS&gt;</span> <span class="hljs-comment">"_d&lt;Left&gt;</span>
+<span class="hljs-keyword">vnoremap</span> <span class="hljs-symbol">&lt;BS&gt;</span> <span class="hljs-comment">"_d</span>
 </div></code></pre>
 <h2 id="cc-syntax-highlighting-in-vimsyntaxcvim">C/C++ syntax highlighting in <em><code>~/.vim/syntax/c.vim</code></em></h2>
 <pre><code class="language-vim"><div>
