@@ -24,12 +24,17 @@ div.name h1{
     font-size: 3.6em;
 }
 
+div.name a {
+    color: inherit;
+    text-decoration: underline;
+}
 div.menu a {
+    color: var(--primary-dark);
     font-size: 1.2em;
-    margin: 0px 0px 0px 20px;
-    border-bottom:4px solid transparent;
-    white-space: nowrap;
     text-decoration: none;
+    border-bottom:4px solid var(--primary-bright);
+    white-space: nowrap;
+    margin: 0px 0px 0px 20px;
 }
 .menu {
     background-color: var(--primary-light);
@@ -41,7 +46,7 @@ div.menu a {
     position: sticky;
 }
 #active {
-    border-bottom:4px solid var(--primary-dark);
+    border-bottom:4px solid var(--primary);
 }
 #me_img {
     min-height: 300px;
@@ -50,6 +55,12 @@ div.menu a {
     object-fit: cover;
     object-position: 50% 0px;
     flex: 0.8;
+    padding:0px;
+    margin:0px;
+}
+img.social {
+    width:32px; height:32px;
+    box-shadow: none;
 }
 .text {
     margin: 1em;
@@ -64,14 +75,16 @@ div.menu a {
     justify-content: center;
 }
 .photo_gallery img {
-    object-fit: cover;
     height: 400px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 5;
     min-width: 500px;
     max-width: 650px;
     flex:1;
+}
+img {
+    object-fit: cover;
     margin: 5px 5px 5px 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 5;
 }
 .photo_gallery div {
     flex:0.5;
@@ -88,6 +101,9 @@ div.menu a {
 .photo_gallery .unlimited {
     min-width: none;
     max-width: none;
+}
+.photo_gallery {
+    justify-content: center;
 }
 .center {
     justify-content: center;
@@ -122,8 +138,16 @@ p {
 a {
     font-weight: bold;
 }
-a:hover, div.menu a:hover, #active:hover{
-    border-bottom:4px solid var(--primary-bright);
+div.anchor {
+    position: relative;
+    top: -5em;
+}
+div.name a:hover{
+    text-decoration:none;
+    text-decoration-line:none;
+}
+div.menu a:hover, #active:hover{
+    border-bottom:4px solid var(--primary-dark);
     text-decoration-line:none;
 }
 .spacer{
@@ -138,14 +162,13 @@ a:hover, div.menu a:hover, #active:hover{
 
 a:link {
     text-decoration: underline;
-    color: var(--primary-dark);
+    color: var(--primary);
 }
 a:visited {
     text-decoration: none;
-    color: inherit;
+    color: var(--primary);
 }
 a:hover {
-    text-decoration: none;
     color: inherit;
 }
 
