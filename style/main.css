@@ -34,9 +34,10 @@ div.menu a {
     background-color: var(--primary-light);
     color: var(--primary-dark);
     padding: 0.7em 0px 1.5em 0px;
-    flex: 1;
     display: flex;
     flex-flow: row wrap;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
 }
 #active {
     border-bottom:4px solid var(--primary-dark);
@@ -47,7 +48,7 @@ div.menu a {
     max-width: 100%;
     object-fit: cover;
     object-position: 50% 0px;
-    flex: 1;
+    flex: 0.8;
 }
 .text {
     margin: 1em;
@@ -123,12 +124,6 @@ a:hover, div.menu a:hover, #active:hover{
     border-bottom:4px solid var(--primary-bright);
     text-decoration-line:none;
 }
-.sticky {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-}
-
 .spacer{
     min-width: 5vw;
     flex: 0 0 0 !important;
