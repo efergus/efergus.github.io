@@ -8,6 +8,9 @@ body {
     font-size: 6mm;
 }
 
+
+/* header (name and menu) */
+
 div.name {
     padding: 1em;
     background-color: var(--primary-dark);
@@ -45,22 +48,23 @@ div.menu a {
     position: -webkit-sticky; /* Safari */
     position: sticky;
 }
+div.name a:hover{
+    text-decoration:none;
+    text-decoration-line:none;
+}
+div.menu a:hover, #active:hover{
+    border-bottom:4px solid var(--primary-dark);
+    text-decoration-line:none;
+}
 #active {
     border-bottom:4px solid var(--primary);
 }
-#me_img {
-    min-height: 300px;
-    min-width: 20em;
-    max-width: 100%;
-    object-fit: cover;
-    object-position: 50% 0px;
-    flex: 0.8;
-    padding:0px;
-    margin:0px;
-}
-img.social {
-    width:32px; height:32px;
-    box-shadow: none;
+
+/* body */
+
+.prose {
+    max-width: 60vw;
+    justify-content: center;
 }
 .text {
     margin: 1em;
@@ -70,21 +74,11 @@ img.social {
     min-width: 18em;
     max-width: 64em;
 }
-.prose {
-    max-width: 60vw;
-    justify-content: center;
-}
 .photo_gallery img {
     height: 400px;
     min-width: 500px;
     max-width: 650px;
     flex:1;
-}
-img {
-    object-fit: cover;
-    margin: 5px 5px 5px 5px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 5;
 }
 .photo_gallery div {
     flex:0.5;
@@ -105,13 +99,22 @@ img {
 .photo_gallery {
     justify-content: center;
 }
-.center {
-    justify-content: center;
+img.social {
+    width:32px; height:32px;
+    box-shadow: none;
 }
-.pad {
-    padding: 1em;
+#me_img {
+    min-height: 300px;
+    min-width: 20em;
+    max-width: 100%;
+    object-fit: cover;
+    object-position: 50% 0px;
+    flex: 0.8;
+    padding:0px;
+    margin:0px;
 }
 
+/* generic */
 
 div {
     display: flex;
@@ -138,28 +141,6 @@ p {
 a {
     font-weight: bold;
 }
-div.anchor {
-    position: relative;
-    top: -5em;
-}
-div.name a:hover{
-    text-decoration:none;
-    text-decoration-line:none;
-}
-div.menu a:hover, #active:hover{
-    border-bottom:4px solid var(--primary-dark);
-    text-decoration-line:none;
-}
-.spacer{
-    min-width: 5vw;
-    flex: 0 0 0 !important;
-}
-.wide-spacer{
-    min-width: 5vw;
-    max-width: 300px;
-    flex: 0;
-}
-
 a:link {
     text-decoration: underline;
     color: var(--primary);
@@ -171,9 +152,36 @@ a:visited {
 a:hover {
     color: inherit;
 }
-
+img {
+    object-fit: cover;
+    margin: 5px 5px 5px 5px;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 5;
+}
+.center {
+    justify-content: center;
+}
+.pad {
+    padding: 1em;
+}
 .card {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   z-index: 5;
+}
+
+
+/* div objects */
+div.spacer{
+    min-width: 5vw;
+    flex: 0 0 0 !important;
+}
+div.wide-spacer{
+    min-width: 5vw;
+    max-width: 300px;
+    flex: 0;
+}
+div.anchor {
+    position: relative;
+    top: -5em;
 }
 
