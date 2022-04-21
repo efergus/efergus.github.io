@@ -1,9 +1,9 @@
 
 body {
-    height: 40vh;
+    height: 60vh;
 }
 
-body div {
+body > div {
     height: 100%;
     margin-top: 10vh;
     display: flex;
@@ -12,7 +12,21 @@ body div {
     flex-direction: column;
 }
 
+div {
+    display: block;
+}
+
 input {
+    margin: 1rem;
     font-size: 4em;
     text-align: center;
+    display: block;
+}
+
+input[type="submit"] {
+    font-size: 2em;
+}
+
+canvas {
+    margin: 1rem;
 }
