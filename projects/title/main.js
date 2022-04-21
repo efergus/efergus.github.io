@@ -11,6 +11,9 @@ let bd_color = '#E53935';
 function update_title() {
     let input = G("input");
     let new_title = input.value;
+    if (input.value === "") {
+        new_title = "Title";
+    }
     document.title = new_title;
     console.log('Title changed to "' + new_title + '"');
     return new_title;
@@ -94,6 +97,7 @@ function main() {
     G("input").oninput = update_title;
     G("form").onsubmit = change_title;
     change_favicon(bg_color, bd_color);
+    update_title();
     create_options(G("options"));
 }
 
