@@ -8,10 +8,17 @@ const colors = '#BF360C #E53935 #F57F17 #FBC02D #D81B60 #8E24AA #5E35B1 #3949AB 
 let bg_color = '#E53935';
 let bd_color = '#E53935';
 
-function change_title() {
+function update_title() {
     let input = G("input");
     let new_title = input.value;
     document.title = new_title;
+    console.log('Title changed to "' + new_title + '"');
+    return new_title;
+}
+
+function change_title() {
+    let input = G("input");
+    let new_title = update_title();
     console.log('Title changed to "' + new_title + '"');
     input.placeholder = new_title;
     input.value = "";
@@ -84,6 +91,7 @@ function change_favicon(fill, stroke) {
 }
 
 function main() {
+    G("input").oninput = update_title;
     G("form").onsubmit = change_title;
     change_favicon(bg_color, bd_color);
     create_options(G("options"));
