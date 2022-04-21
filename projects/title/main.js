@@ -3,7 +3,7 @@ const G = document.getElementById.bind(document);
 const Q = document.querySelectorAll.bind(document);
 const C = document.createElement.bind(document);
 
-const colors = '#BF360C #E53935 #F57F17 #FBC02D #D81B60 #8E24AA #5E35B1 #3949AB #1E88E5 #0D47A1 #00897B #1B5E20 #607D8B #757575'.split(' ');
+const colors = '#BF360C #E53935 #F57F17 #FBC02D #D81B60 #8E24AA #5E35B1 #3949AB #1E88E5 #0D47A1 #00897B #1B5E20 #607D8B #757575 #000000'.split(' ');
 
 let bg_color = '#E53935';
 let bd_color = '#E53935';
@@ -15,7 +15,7 @@ function update_title() {
         new_title = "Title";
     }
     document.title = new_title;
-    console.log('Title changed to "' + new_title + '"');
+    set_params();
     return new_title;
 }
 
@@ -91,9 +91,37 @@ function change_favicon(fill, stroke) {
     bd_color = stroke;
     let canvas = create_icon(fill, stroke);
     set_icon_to_canvas(canvas);
+    set_params();
+}
+
+function get_params() {
+    // the following is pretty inelegant
+    var url = new URL(window.location.href);
+    let b = url.searchParams.get("b");
+    if (b) {
+        bg_color = b;
+    }
+    let s = url.searchParams.get("s");
+    if (s) {
+        bd_color = s;
+    }
+    let t = url.searchParams.get("t");
+    if (t) {
+        input.value = t;
+    }
+}
+
+function set_params() {
+    var url = new URL(window.location.href);
+    url.searchParams.set("b", bg_color);
+    url.searchParams.set("s", bd_color);
+    url.searchParams.set("t", input.value);
+    history.pushState({path: url.href}, '', url.href);
+    console.log(url.href);
 }
 
 function main() {
+    get_params();
     G("input").oninput = update_title;
     G("form").onsubmit = change_title;
     change_favicon(bg_color, bd_color);
