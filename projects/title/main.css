@@ -1,0 +1,18 @@
+
+body {
+    height: 40vh;
+}
+
+body div {
+    height: 100%;
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+input {
+    font-size: 4em;
+    text-align: center;
+}
