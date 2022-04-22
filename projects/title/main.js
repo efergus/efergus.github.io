@@ -116,7 +116,7 @@ function set_params() {
     url.searchParams.set("b", bg_color);
     url.searchParams.set("s", bd_color);
     url.searchParams.set("t", input.value);
-    history.pushState({path: url.href}, '', url.href);
+    history.replaceState({path: url.href}, '', url.href);
     console.log(url.href);
 }
 
