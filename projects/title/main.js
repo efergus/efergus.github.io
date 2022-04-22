@@ -112,6 +112,7 @@ function get_params() {
 }
 
 function set_params() {
+    var url = new URL(window.location.href);
     url.searchParams.set("b", bg_color);
     url.searchParams.set("s", bd_color);
     url.searchParams.set("t", document.title);
