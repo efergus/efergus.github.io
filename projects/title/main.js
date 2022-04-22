@@ -112,10 +112,9 @@ function get_params() {
 }
 
 function set_params() {
-    var url = new URL(window.location.href);
     url.searchParams.set("b", bg_color);
     url.searchParams.set("s", bd_color);
-    url.searchParams.set("t", input.value);
+    url.searchParams.set("t", document.title);
     history.replaceState({path: url.href}, '', url.href);
     console.log(url.href);
 }
