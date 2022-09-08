@@ -38,7 +38,8 @@ function load(){
     generate_test();
     
     fields = new FieldHandler();
-    fields.fields["test_input"].blank = 'TYPE TO BEGIN!';
+    f = fields.fields;
+    f.test_input.blank = f.test_input.element.innerHTML;
     fields.fields["test_input"].whitelist = symbols.substring(0, 2);
     fields.fields["i_base"].whitelist = symbols.substring(0, 10);
     fields.fields["o_base"].whitelist = symbols.substring(0, 10);
@@ -67,22 +68,12 @@ function load(){
 
 function update(){
     t = new Date();
-    correct_v = clamp(correct_v-0.02/Math.sqrt(i_base), 0, 1.05);
-    var s = Math.pow(Math.sin(Math.min(correct_v, 1)*Math.PI/2), 2)*clamp(Math.sqrt(total_correct), 1, 10)
-    correct_el.style.color = "rgba(255, 255, 255, "+s+")";
-    correct_el.style.textShadow = "0px 0px 100px rgba(255, 255, 255, "+s+")";
-    correct_el.style.fontSize = (s*0.5+0.5)*correct_size+"px";
-}
-
-function brightness(x){
-    return clamp(1-x/brightness_time/2000/digits*i_base, 0, 1);
-}
-function size(x){
-    return clamp(1-x/size_time/2000/digits/digits*i_base, 0, 1);
-}
-
-function clamp(x, a, b){
-    return Math.min(Math.max(a, x), b);
+    if (correct_v > 0) {
+        correct_v = (correct_v-0.1)*.985+0.1;
+    }
+    correct_el.style.color = "rgba(255, 255, 255, "+correct_v+")";
+    correct_el.style.textShadow = "0px 0px 100px rgba(255, 255, 255, "+correct_v+")";
+    correct_el.style.fontSize = (correct_v*0.5+0.5)*correct_size+"px";
 }
 
 function correct(){
