@@ -66,6 +66,9 @@ div.menu a:hover, #active:hover{
     max-width: 60vw;
     justify-content: center;
 }
+.indented p{
+    padding-left: 2em;
+}
 .text {
     margin: 1em;
     flex: 1;
