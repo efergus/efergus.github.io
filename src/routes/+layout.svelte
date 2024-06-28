@@ -1,0 +1,37 @@
+<script>
+  import "../app.css";
+  import "../style.css";
+  import "$lib/markdown/markdown.css";
+  import NavLink from "$lib/components/NavLink.svelte";
+</script>
+
+<svelte:head>
+  <title>Ethan Ferguson</title>
+</svelte:head>
+
+<div class="bg-theme w-full h-screen flex flex-col overflow-scroll absolute">
+  <header class="bg-primary p-4">
+    <div>
+      <h1>Ethan Ferguson</h1>
+    </div>
+  </header>
+  <div
+    class="bg-secondary px-8 pt-2 pb-3 flex flex-col lg:flex-row gap-4 flex-wrap sticky top-0"
+  >
+    <NavLink href="/">Home</NavLink>
+    <NavLink href="/experience">Experience</NavLink>
+    <NavLink href="/projects">Projects</NavLink>
+    <NavLink href="/photography">Photography</NavLink>
+    <NavLink href="/art">Art</NavLink>
+  </div>
+  <div class="w-full grow flex flex-col justify-center p-4">
+    <div class="grow-[1]" />
+    <div class="grow-[4] flex justify-center">
+      <div>
+        <slot />
+      </div>
+    </div>
+
+    <div class="grow-[6]" />
+  </div>
+</div>
