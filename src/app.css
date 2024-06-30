@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .light {
+    --color-theme: 255 255 255;
+    --color-primary: 1 87 155;
+    --color-secondary: 0 47 108;
+    --color-contrast: 0 0 0;
+    --color-contrast-primary: 255 255 255;
+    --color-contrast-secondary: 255 255 255;
+    --color-highlight: 129 212 250;
+    @apply text-contrast border-contrast fill-contrast;
+  }
+
+  .dark {
+    --color-theme: 0 10 23;
+    --color-primary: 1 87 155;
+    --color-secondary: 0 47 108;
+    --color-contrast: 255 255 255;
+    --color-contrast-primary: 255 255 255;
+    --color-contrast-secondary: 255 255 255;
+    --color-highlight: 129 212 250;
+    @apply text-contrast border-contrast fill-contrast;
+  }
+
+  :root {
+    @apply light stroke-2;
+  }
+
+  div:has(label > input.dark-mode-toggle:checked) {
+    @apply dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      @apply dark;
+    }
+
+    div:has(label > input.dark-mode-toggle:checked) {
+      @apply light;
+    }
+  }
+
+  :root {
+    @apply text-contrast fill-contrast;
+  }
+
+  .bg-primary {
+    @apply text-contrast-primary fill-contrast-primary;
+  }
+
+  .bg-secondary {
+    @apply text-contrast-secondary fill-contrast-secondary;
+  }
+
+  .center {
+    justify-content: center;
+  }
+}
