@@ -1,6 +1,6 @@
 <script>
   import Project from "$lib/components/Card.svelte";
-  import img from "$lib/assets/particlegrid/mol-representations.png";
+  import molecule from "$lib/assets/particlegrid/mol-representations.png";
 </script>
 
 <h1 class="emphasize">Projects and Writeups</h1>
@@ -9,7 +9,7 @@
   <Project
     title="Fermidle"
     subtitle="why do they call them dle's when they're anything but?"
-    link="/fermidle"
+    link="https://eferg.us/fermidle"
   >
     <p>
       How many golf balls would it take to fill the oceans? How many Empire
@@ -54,7 +54,7 @@
       The overall process is is to go from SMILES string (a) to 3D grid (f). For
       more info, take a look at the paper!
     </p>
-    <img src={img} alt="The principle of ParticleGrid" />
+    <img src={molecule} alt="The principle of ParticleGrid" />
   </Project>
   <Project
     title="Static Svlete on GitHub Pages"
@@ -68,11 +68,8 @@
       much fluff, so that's what this is.
     </p>
   </Project>
-  <Project
-    title="No-JS dark mode toggle"
-    subtitle="Writeup"
-    link="/projects/dark-mode"
-  >
+  <!-- TODO: link -->
+  <Project title="No-JS dark mode toggle" subtitle="Writeup" link="">
     <p>
       Everyone knows dark mode is best. Or something. But what if... you had the
       option to choose? Well, some brilliant people have decided to make that
@@ -80,11 +77,8 @@
       using any JS.
     </p>
   </Project>
-  <Project
-    title="No-JS mobile menu"
-    subtitle="Writeup"
-    link="/projects/mobile-menu"
-  >
+  <!-- TODO: link -->
+  <Project title="No-JS mobile menu" subtitle="Writeup" link="">
     <p>
       Mobile pop-out menus are super nice, but you'd expect to need JS for
       something that complex. But what if... you didn't? Similarly to my no-JS
