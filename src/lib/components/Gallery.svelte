@@ -31,10 +31,14 @@
       x: window.innerWidth,
       y: window.innerHeight,
     };
+    const scale = Math.min(screen.x / rect.width, screen.y / rect.height) * 0.8;
+    if (scale <= 1) {
+      return;
+    }
     const position = {
       x: screen.x / 2 - (rect.x + rect.width / 2),
       y: screen.y / 2 - (rect.y + rect.height / 2),
-      scale: Math.min(screen.x / rect.width, screen.y / rect.height) * 0.8,
+      scale,
     };
     selected = {
       index,
@@ -64,7 +68,7 @@
 <div>
   {#each images as image, idx}
     <button
-      class="transition-transform drop-shadow hover:scale-110 hover:z-10"
+      class="transition-transform drop-shadow lg:hover:scale-105 hover:z-10"
       on:click={onClick(idx)}
       style={idx === selected?.index ? getStyle(selected) : ""}
     >
