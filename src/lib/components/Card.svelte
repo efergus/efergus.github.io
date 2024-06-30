@@ -18,7 +18,7 @@
     {#if subtitle}
       <p class="text-contrast/60 pb-2">{subtitle}</p>
     {/if}
-    <div class="flex flex-col gap-3 overflow-auto">
+    <div class="flex flex-col justify-start gap-3 overflow-auto">
       <slot />
     </div>
   </div>

@@ -5,21 +5,24 @@
 
 <h1 class="emphasize">Projects and Writeups</h1>
 
-<div class="max-w-[80vw]">
+<div id="grid" class="max-w-[80vw]">
   <Project
     title="Fermidle"
     subtitle="why do they call them dle's when they're anything but?"
     link="https://eferg.us/fermidle"
   >
-    <p>
-      How many golf balls would it take to fill the oceans? How many Empire
-      State Buildings would it take to reach the altitude of the ISS?
-    </p>
+    <div>
+      <p>How many golf balls would it take to fill the oceans?</p>
+      <p>
+        How many Empire State Buildings would it take to reach the altitude of
+        the ISS?
+      </p>
+    </div>
   </Project>
   <Project
     title="WebGPU-Spy"
     subtitle="Paper: A hardware-based microarchitectural attack"
-    link=""
+    link="https://arxiv.org/pdf/2401.04349"
   >
     <p>
       WebGPU-Spy is a hardware-based michroarchitectural attack that takes
@@ -51,8 +54,10 @@
       my colleague's initial numpy implementation.
     </p>
     <p>
-      The overall process is is to go from SMILES string (a) to 3D grid (f). For
-      more info, take a look at the paper!
+      The overall process is is to go from SMILES string <i>(a)</i> to 3D grid
+      <i>(f)</i>. For more info, take a look at the paper! We were able to
+      generate these grids, and then create a model using Pytorch to predict the
+      homo-lumo gap of a material.
     </p>
     <img src={molecule} alt="The principle of ParticleGrid" />
   </Project>
@@ -87,6 +92,17 @@
     </p>
   </Project>
   <Project
+    title="Basic Backprop"
+    subtitle="Numpy-based machine learning"
+    link="https://github.com/efergus/basic-backprop"
+  >
+    <p>
+      I wanted to understand how backpropagation works, so I built a
+      backpropagation algorithm in python using numpy. It's not exactly
+      high-speed.
+    </p>
+  </Project>
+  <Project
     title="Burnt Umber"
     subtitle="3D Color picker"
     link="https://github.com/efergus/burnt-umber"
@@ -102,13 +118,17 @@
       >
     </p>
   </Project>
+  <!-- TODO <Project
+    title="Image Gallery"
+  >
+  </Project> -->
 </div>
 
 <style lang="postcss">
-  div {
+  div#grid {
     gap: 1em;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(90vw, 24rem), 1fr));
     grid-auto-rows: 24rem;
   }
 </style>
