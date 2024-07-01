@@ -1,12 +1,36 @@
-<script>
+<script lang="ts">
   import clsx from "clsx";
+  import { onMount } from "svelte";
 
   export let duration = 0.15;
   export let adaptive = true;
+  export let open = false;
+
+  let label: HTMLLabelElement;
+
+  const listener = (e: Event) => {
+    if (e?.currentTarget && !label.contains(e.target as Node)) {
+      open = false;
+    }
+  };
+
+  onMount(() => {
+    document.addEventListener("click", listener);
+    document.addEventListener("wheel", listener);
+    document.addEventListener("touchmove", listener);
+    // TODO finger scroll?
+    return () => {
+      document.removeEventListener("click", listener);
+      document.removeEventListener("wheel", listener);
+      document.addEventListener("touchmove", listener);
+    };
+  });
+
+  $: console.log({ open });
 </script>
 
-<label class={clsx({ adaptive })}>
-  <input type="checkbox" class="menu hidden" />
+<label bind:this={label} class={clsx("hover:cursor-pointer", { adaptive })}>
+  <input type="checkbox" class="menu hidden" bind:checked={open} />
   <div class="bar">
     <div class="title">
       <slot name="title" />
@@ -30,6 +54,7 @@
     </svg>
   </div>
 
+  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
   <div
     class={clsx("clip", {
       adaptive,
@@ -53,6 +78,7 @@
     opacity: 0;
   }
 
+  /* position/style */
   div.title {
     @apply transition-opacity opacity-100 flex items-center grow;
   }

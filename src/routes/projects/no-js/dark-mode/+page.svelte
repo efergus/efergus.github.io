@@ -1,15 +1,11 @@
 <script lang="ts">
   import Card from "$lib/components/Card.svelte";
-  import DarkModeButton from "$lib/components/DarkModeButton.svelte";
-  import NavLink from "$lib/components/NavLink.svelte";
 
   import mediaQuery from "./media-query.css?raw";
   import exampleJs from "./example-js.txt?raw";
   import exampleHtml from "./example.html?raw";
   import exampleCSS from "./example.css?raw";
   import Code from "$lib/components/Code.svelte";
-
-  console.log({ mediaQuery });
 </script>
 
 <svelte:head>
