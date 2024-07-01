@@ -20,7 +20,7 @@
     transform: translateY(-100%);
   }
 
-  /* Styling you don't have to worry about */
+  /* ignore */
   div#menu {
     transition-timing-function: ease-in-out;
     transition-property: transform;
@@ -37,4 +37,5 @@
   div {
     color: black;
   }
+  /* ignore */
 </style>

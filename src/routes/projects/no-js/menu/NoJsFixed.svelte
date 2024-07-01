@@ -4,8 +4,14 @@
 <div id="menu_bar">
   <label>
     <input type="checkbox" />
-    <div id="menu">Contents of the menu</div>
-    <p>Toggle</p>
+    <div id="screen">
+      <div id="menu">
+        <p>Here is a menu</p>
+        <p>That is tall</p>
+        <p>And useful now</p>
+      </div>
+    </div>
+    <div id="toggle">Toggle</div>
   </label>
 </div>
 
@@ -13,11 +19,23 @@
   input {
     display: none;
   }
-  input:checked ~ div#menu {
+  input:checked ~ div div#menu {
     transform: translateY(0px);
+  }
+  label {
+    position: relative;
   }
   div#menu {
     transform: translateY(-100%);
+  }
+  div#screen {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    overflow: hidden;
+  }
+  div#toggle {
+    z-index: 10;
   }
 
   /* ignore */
@@ -30,8 +48,7 @@
   }
   label {
     display: flex;
-    justify-content: stretch;
-    overflow: hidden;
+    justify-content: end;
     background-color: pink;
   }
   div {

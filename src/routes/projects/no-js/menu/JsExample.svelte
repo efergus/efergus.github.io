@@ -1,7 +1,9 @@
 <script lang="ts">
   let show = false;
 
-  let toggleMenu = () => (show = !show);
+  let toggleMenu = () => {
+    show = !show;
+  };
 </script>
 
 <div id="menu_bar">
@@ -17,7 +19,7 @@
     transform: translateY(0px);
   }
 
-  /* Styling you don't have to worry about */
+  /* ignore */
   div#menu {
     transition-timing-function: ease-in-out;
     transition-property: transform;
@@ -35,4 +37,5 @@
   div {
     color: black;
   }
+  /* ignore */
 </style>

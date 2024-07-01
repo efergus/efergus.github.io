@@ -30,7 +30,7 @@
       </div>
     </PageMenu>
   </div>
-  <div class="w-full grow flex flex-col justify-center p-4">
+  <div class="w-full grow flex flex-col justify-center px-4 py-8">
     <div class="grow-[1]" />
     <div class="grow-[4] flex justify-center">
       <div class="max-w-full">
