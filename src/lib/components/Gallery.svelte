@@ -1,6 +1,5 @@
 <script lang="ts">
   import clsx from "clsx";
-  import { list } from "postcss";
   import { onMount } from "svelte";
   type Selected = {
     index: number;
@@ -17,6 +16,7 @@
     shape?: "portrait" | "square" | string;
   }[] = [];
 
+  let gallery: HTMLDivElement;
   let selected: Selected | null = null;
 
   const onClick = (index: number) => (event: MouseEvent) => {
@@ -24,7 +24,6 @@
       selected = null;
       return;
     }
-    event.stopPropagation();
     const elem = event.target as HTMLButtonElement;
     const rect = elem?.getBoundingClientRect();
     const screen = {
@@ -49,23 +48,26 @@
   const getStyle = (selected: Selected) => {
     const { position } = selected;
     const style = `transform: translate(${position.x}px, ${position.y}px) scale(${position.scale}); z-index: 20;`;
-    console.log({ style });
     return style;
   };
 
-  const listener = () => {
-    selected = null;
+  const listener = (e: Event) => {
+    if (e?.currentTarget && !gallery.contains(e.target as Node)) {
+      selected = null;
+    }
   };
 
   onMount(() => {
     document.addEventListener("click", listener);
+    document.addEventListener("scroll", listener);
     return () => {
       document.removeEventListener("click", listener);
+      document.removeEventListener("scroll", listener);
     };
   });
 </script>
 
-<div>
+<div bind:this={gallery}>
   {#each images as image, idx}
     <button
       class="transition-transform drop-shadow lg:hover:scale-105 hover:z-10"

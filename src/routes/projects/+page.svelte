@@ -5,20 +5,7 @@
 
 <h1 class="emphasize">Projects and Writeups</h1>
 
-<div id="grid" class="max-w-[80vw]">
-  <Project
-    title="Fermidle"
-    subtitle="why do they call them dle's when they're anything but?"
-    link="https://eferg.us/fermidle"
-  >
-    <div>
-      <p>How many golf balls would it take to fill the oceans?</p>
-      <p>
-        How many Empire State Buildings would it take to reach the altitude of
-        the ISS?
-      </p>
-    </div>
-  </Project>
+<div id="grid">
   <Project
     title="WebGPU-Spy"
     subtitle="Paper: A hardware-based microarchitectural attack"
@@ -62,6 +49,43 @@
     <img src={molecule} alt="The principle of ParticleGrid" />
   </Project>
   <Project
+    title="No-JS dark mode toggle"
+    subtitle="Writeup"
+    link="/projects/no-js/dark-mode"
+  >
+    <p>
+      Everyone knows dark mode is best. Or something. But what if... you had the
+      option to choose? Well, some brilliant people have decided to make that
+      dream a reality, and I decided to challenge myself to do it using only
+      CSS, without using any JS.
+    </p>
+  </Project>
+  <Project
+    title="No-JS mobile menu"
+    subtitle="Writeup"
+    link="/projects/no-js/menu"
+  >
+    <p>
+      Mobile pop-out menus are super nice, but you'd expect to need JS for
+      something that complex. But what if... you didn't? Similarly to my no-JS
+      dark mode, I made a mobile menu that doesn't need any JS to function, and
+      it even has a fancy animation! It doesn't even use <code>calc()</code>!
+    </p>
+  </Project>
+  <Project
+    title="Fermidle"
+    subtitle="they call them dle's but they're anything but"
+    link="https://eferg.us/fermidle"
+  >
+    <div>
+      <p>How many golf balls would it take to fill the oceans?</p>
+      <p>
+        How many Empire State Buildings would it take to reach the altitude of
+        the ISS?
+      </p>
+    </div>
+  </Project>
+  <Project
     title="Static Svlete on GitHub Pages"
     subtitle="Writeup"
     link="/projects/svelte-pages"
@@ -73,24 +97,6 @@
       much fluff, so that's what this is.
     </p>
   </Project>
-  <!-- TODO: link -->
-  <Project title="No-JS dark mode toggle" subtitle="Writeup" link="">
-    <p>
-      Everyone knows dark mode is best. Or something. But what if... you had the
-      option to choose? Well, some brilliant people have decided to make that
-      dream a reality, and I decided to try doing it using only CSS, without
-      using any JS.
-    </p>
-  </Project>
-  <!-- TODO: link -->
-  <Project title="No-JS mobile menu" subtitle="Writeup" link="">
-    <p>
-      Mobile pop-out menus are super nice, but you'd expect to need JS for
-      something that complex. But what if... you didn't? Similarly to my no-JS
-      dark mode, I made a mobile menu that doesn't need any JS to function, and
-      it even has a fancy animation! It doesn't even use <code>calc()</code>!
-    </p>
-  </Project>
   <Project
     title="Basic Backprop"
     subtitle="Numpy-based machine learning"
@@ -99,7 +105,8 @@
     <p>
       I wanted to understand how backpropagation works, so I built a
       backpropagation algorithm in python using numpy. It's not exactly
-      high-speed.
+      high-speed, but it gets reasonable results for a basic feed-forward
+      network on the MNIST dataset.
     </p>
   </Project>
   <Project
@@ -127,8 +134,11 @@
 <style lang="postcss">
   div#grid {
     gap: 1em;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(90vw, 24rem), 1fr));
     grid-auto-rows: 24rem;
+    justify-content: center;
+    @apply max-w-4xl;
   }
 </style>

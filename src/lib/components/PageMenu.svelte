@@ -1,13 +1,40 @@
-<script>
+<script lang="ts">
   import clsx from "clsx";
+  import { onMount } from "svelte";
 
-  export let open = false;
   export let duration = 0.15;
+  export let adaptive = true;
+  export let open = false;
+
+  let label: HTMLLabelElement;
+
+  const listener = (e: Event) => {
+    if (e?.currentTarget && !label.contains(e.target as Node)) {
+      open = false;
+    }
+  };
+
+  onMount(() => {
+    document.addEventListener("click", listener);
+    document.addEventListener("wheel", listener);
+    document.addEventListener("touchmove", listener);
+    // TODO finger scroll?
+    return () => {
+      document.removeEventListener("click", listener);
+      document.removeEventListener("wheel", listener);
+      document.addEventListener("touchmove", listener);
+    };
+  });
+
+  $: console.log({ open });
 </script>
 
-<div class="relative flex justify-end md:justify-start w-full">
-  <label class={clsx("menu md:hidden place-self-end", { open })}>
-    <input type="checkbox" class="menu hidden" bind:checked={open} />
+<label bind:this={label} class={clsx("hover:cursor-pointer", { adaptive })}>
+  <input type="checkbox" class="menu hidden" bind:checked={open} />
+  <div class="bar">
+    <div class="title">
+      <slot name="title" />
+    </div>
     <svg
       style="--duration:{duration}"
       xmlns="http://www.w3.org/2000/svg"
@@ -19,44 +46,65 @@
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="feather feather-menu"
+      class="z-10"
     >
       <line class="line1" x1="-9" y1="0" x2="9" y2="0" />
       <line class="line2" x1="-9" y1="0" x2="9" y2="0" />
       <line class="line3" x1="-9" y1="0" x2="9" y2="0" />
     </svg>
-  </label>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div
-    class="menu"
-    on:click={() => {
-      open = false;
-    }}
-  >
-    <slot />
   </div>
-</div>
+
+  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+  <div
+    class={clsx("clip", {
+      adaptive,
+    })}
+  >
+    <div class="menu">
+      <slot />
+    </div>
+  </div>
+</label>
 
 <style lang="postcss">
+  /* state */
+  label {
+    @apply w-full relative;
+  }
+  label input:checked ~ div > div.menu {
+    transform: translateY(0);
+  }
+  input.menu:checked ~ .title {
+    opacity: 0;
+  }
+
+  /* position/style */
+  div.title {
+    @apply transition-opacity opacity-100 flex items-center grow;
+  }
   div.menu {
-    @apply absolute transition-transform -translate-y-full w-full;
+    @apply transition-transform -translate-y-full overflow-auto pointer-events-auto w-full max-h-screen;
+  }
+  div.bar {
+    @apply flex justify-stretch items-center p-2 w-full;
+  }
+  div.clip {
+    @apply absolute top-0 overflow-hidden pointer-events-none w-full;
   }
   @media screen(md) {
-    div.menu {
+    .adaptive div.bar {
+      display: none;
+    }
+    .adaptive div.menu {
       transform: translateY(0px);
+      position: static;
+    }
+    .adaptive div.clip {
       position: static;
     }
   }
 
-  label.menu:has(input.menu:checked) ~ div.menu,
-  label.menu.open ~ div.menu {
-    transform: translateY(0);
-  }
-
-  label.menu {
-    @apply p-2 z-10;
-  }
+  /* button animation */
   line {
     transition-property: transform;
     transition-duration: calc(var(--duration) * 1s);
@@ -71,18 +119,15 @@
   .line3 {
     transform: translateY(-30%);
   }
-  input.menu:checked ~ svg > line.line1,
-  .open line.line1 {
+  input.menu:checked ~ div line.line1 {
     transform: translateY(0) rotate(-45deg);
   }
 
-  input.menu:checked ~ svg > line.line2,
-  .open line.line2 {
+  input.menu:checked ~ div line.line2 {
     transform: scaleX(0);
   }
 
-  input.menu:checked ~ svg > line.line3,
-  .open line.line3 {
+  input.menu:checked ~ div line.line3 {
     transform: translateY(0) rotate(45deg);
   }
 </style>
