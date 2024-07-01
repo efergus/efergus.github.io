@@ -25,8 +25,6 @@
       document.addEventListener("touchmove", listener);
     };
   });
-
-  $: console.log({ open });
 </script>
 
 <label bind:this={label} class={clsx("hover:cursor-pointer", { adaptive })}>

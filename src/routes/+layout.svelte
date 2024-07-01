@@ -13,12 +13,14 @@
   <title>Ethan Ferguson</title>
 </svelte:head>
 
-<div class="theme-reset w-full h-screen flex flex-col overflow-auto absolute">
-  <header class="bg-primary p-1 z-50 hidden md:flex justify-between">
+<div class="w-full h-screen flex flex-col overflow-auto absolute">
+  <header
+    class="theme-focus bg-primary p-1 z-50 hidden md:flex justify-between"
+  >
     <h1 class="p-3">Ethan Ferguson</h1>
     <DarkModeButton bind:checked={invert} />
   </header>
-  <div class="sticky top-0 bg-secondary w-full z-40">
+  <div class="theme-focus sticky top-0 bg-secondary w-full z-40">
     <PageMenu>
       <h2 slot="title">Ethan Ferguson</h2>
       <div

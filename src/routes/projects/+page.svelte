@@ -83,6 +83,7 @@
         How many Empire State Buildings would it take to reach the altitude of
         the ISS?
       </p>
+      <p>Try to guess the order of magnitude of absurd physics problems!</p>
     </div>
   </Project>
   <Project

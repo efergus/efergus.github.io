@@ -29,13 +29,11 @@
     @apply light stroke-2;
   }
 
-  div.theme-reset:has(:not(.theme-reset) > label > input.dark-mode-toggle) {
+  div:has(> .theme-focus > label > input.dark-mode-toggle) {
     @apply light;
   }
 
-  div.theme-reset:has(
-      :not(.theme-reset) > label > input.dark-mode-toggle:checked
-    ) {
+  div:has(> .theme-focus > label > input.dark-mode-toggle:checked) {
     @apply dark;
   }
 
@@ -44,7 +42,11 @@
       @apply dark;
     }
 
-    div.theme-node:has(label > input.dark-mode-toggle:checked) {
+    div:has(> .theme-focus > label > input.dark-mode-toggle) {
+      @apply dark;
+    }
+
+    div:has(> .theme-focus > label > input.dark-mode-toggle:checked) {
       @apply light;
     }
   }
