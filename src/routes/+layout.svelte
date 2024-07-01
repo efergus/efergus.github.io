@@ -4,6 +4,7 @@
   import "$lib/markdown/markdown.css";
   import NavLink from "$lib/components/NavLink.svelte";
   import PageMenu from "$lib/components/PageMenu.svelte";
+  import DarkModeButton from "$lib/components/DarkModeButton.svelte";
 </script>
 
 <svelte:head>
@@ -11,10 +12,9 @@
 </svelte:head>
 
 <div class="bg-theme w-full h-screen flex flex-col overflow-auto absolute">
-  <header class="bg-primary p-4 z-50 hidden md:block">
-    <div>
-      <h1>Ethan Ferguson</h1>
-    </div>
+  <header class="bg-primary p-1 z-50 hidden md:flex justify-between">
+    <h1 class="p-3">Ethan Ferguson</h1>
+    <DarkModeButton />
   </header>
   <div class="sticky top-0 bg-secondary w-full z-40">
     <PageMenu>

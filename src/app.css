@@ -11,7 +11,7 @@
     --color-contrast-primary: 255 255 255;
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
-    @apply text-contrast border-contrast fill-contrast;
+    @apply text-contrast border-contrast fill-contrast stroke-contrast;
   }
 
   .dark {
@@ -22,7 +22,7 @@
     --color-contrast-primary: 255 255 255;
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
-    @apply text-contrast border-contrast fill-contrast;
+    @apply text-contrast border-contrast fill-contrast stroke-contrast;
   }
 
   :root {
@@ -44,15 +44,15 @@
   }
 
   :root {
-    @apply text-contrast fill-contrast;
+    @apply text-contrast stroke-contrast fill-contrast;
   }
 
   .bg-primary {
-    @apply text-contrast-primary fill-contrast-primary;
+    @apply text-contrast-primary stroke-contrast-primary fill-contrast-primary;
   }
 
   .bg-secondary {
-    @apply text-contrast-secondary fill-contrast-secondary;
+    @apply text-contrast-secondary stroke-contrast-primary fill-contrast-secondary;
   }
 
   .center {
