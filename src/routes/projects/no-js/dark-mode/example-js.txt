@@ -1,0 +1,8 @@
+let root = document.getElementById("root")
+let button = document.getElementById("button")
+let dark = false;
+
+button.onclick = () => {
+    dark = !dark;
+    root.style = dark ? "dark mode css" : "light mode css";
+}

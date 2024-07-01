@@ -11,7 +11,7 @@
     --color-contrast-primary: 255 255 255;
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
-    @apply text-contrast border-contrast fill-contrast stroke-contrast;
+    @apply bg-theme;
   }
 
   .dark {
@@ -22,14 +22,20 @@
     --color-contrast-primary: 255 255 255;
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
-    @apply text-contrast border-contrast fill-contrast stroke-contrast;
+    @apply bg-theme;
   }
 
   :root {
     @apply light stroke-2;
   }
 
-  div:has(label > input.dark-mode-toggle:checked) {
+  div.theme-reset:has(:not(.theme-reset) > label > input.dark-mode-toggle) {
+    @apply light;
+  }
+
+  div.theme-reset:has(
+      :not(.theme-reset) > label > input.dark-mode-toggle:checked
+    ) {
     @apply dark;
   }
 
@@ -38,12 +44,12 @@
       @apply dark;
     }
 
-    div:has(label > input.dark-mode-toggle:checked) {
+    div.theme-node:has(label > input.dark-mode-toggle:checked) {
       @apply light;
     }
   }
 
-  :root {
+  .bg-theme {
     @apply text-contrast stroke-contrast fill-contrast;
   }
 
@@ -53,6 +59,10 @@
 
   .bg-secondary {
     @apply text-contrast-secondary stroke-contrast-primary fill-contrast-secondary;
+  }
+
+  :root {
+    @apply bg-theme;
   }
 
   .center {

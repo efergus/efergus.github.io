@@ -73,8 +73,11 @@
       much fluff, so that's what this is.
     </p>
   </Project>
-  <!-- TODO: link -->
-  <Project title="No-JS dark mode toggle" subtitle="Writeup" link="">
+  <Project
+    title="No-JS dark mode toggle"
+    subtitle="Writeup"
+    link="/projects/no-js/dark-mode"
+  >
     <p>
       Everyone knows dark mode is best. Or something. But what if... you had the
       option to choose? Well, some brilliant people have decided to make that
@@ -82,7 +85,6 @@
       CSS, without using any JS.
     </p>
   </Project>
-  <!-- TODO: link -->
   <Project
     title="No-JS mobile menu"
     subtitle="Writeup"

@@ -1,0 +1,41 @@
+.light {
+  --color-theme: white;
+  --color-text: black;
+}
+.dark {
+  --color-theme: black;
+  --color-text: white;
+}
+* {
+  color: var(--color-text);
+}
+.bg-theme {
+  background-color: var(--color-theme);
+}
+
+:root {
+  @apply light;
+}
+
+:root:has(label > input.dark-mode-toggle:checked) {
+  @apply dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @apply dark;
+  }
+
+  :root:has(label > input.dark-mode-toggle:checked) {
+    @apply light;
+  }
+}
+
+input.dark-mode-toggle,
+label.dark-mode-toggle {
+  display: none;
+}
+/* Only show the button if it will be supported */
+label.dark-mode-toggle:has(input.dark-mode-toggle) {
+  display: block;
+}

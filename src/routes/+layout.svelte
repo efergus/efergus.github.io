@@ -5,16 +5,18 @@
   import NavLink from "$lib/components/NavLink.svelte";
   import PageMenu from "$lib/components/PageMenu.svelte";
   import DarkModeButton from "$lib/components/DarkModeButton.svelte";
+
+  let invert = false;
 </script>
 
 <svelte:head>
   <title>Ethan Ferguson</title>
 </svelte:head>
 
-<div class="bg-theme w-full h-screen flex flex-col overflow-auto absolute">
+<div class="theme-reset w-full h-screen flex flex-col overflow-auto absolute">
   <header class="bg-primary p-1 z-50 hidden md:flex justify-between">
     <h1 class="p-3">Ethan Ferguson</h1>
-    <DarkModeButton />
+    <DarkModeButton bind:checked={invert} />
   </header>
   <div class="sticky top-0 bg-secondary w-full z-40">
     <PageMenu>
@@ -27,6 +29,10 @@
         <NavLink href="/projects">Projects</NavLink>
         <NavLink href="/photography">Photography</NavLink>
         <NavLink href="/art">Art</NavLink>
+        <div class="flex items-center gap-2 md:hidden">
+          <h2>Toggle dark mode:</h2>
+          <DarkModeButton bind:checked={invert} />
+        </div>
       </div>
     </PageMenu>
   </div>
