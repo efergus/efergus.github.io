@@ -36,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"clsx": "^2.1.1",
+		"highlight.js": "^11.9.0",
 		"svelte-markdown": "^0.4.1"
 	}
 }

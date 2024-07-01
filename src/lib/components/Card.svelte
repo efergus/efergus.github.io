@@ -2,7 +2,7 @@
   import ExternalLink from "$lib/icons/external-link.svelte";
   import ConditionalLink from "./ConditionalLink.svelte";
 
-  export let title: string;
+  export let title: string = "";
   export let subtitle: string = "";
   export let link = "";
 </script>
@@ -10,7 +10,9 @@
 <ConditionalLink {link}>
   <div class="flex flex-col border rounded-lg shadow px-4 py-2 h-full w-full">
     <div class="flex justify-between">
-      <h2>{title}</h2>
+      {#if title}
+        <h2>{title}</h2>
+      {/if}
       {#if link}
         <ExternalLink />
       {/if}

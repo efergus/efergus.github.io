@@ -5,10 +5,10 @@
 
 <h1 class="emphasize">Projects and Writeups</h1>
 
-<div id="grid" class="max-w-[80vw]">
+<div id="grid">
   <Project
     title="Fermidle"
-    subtitle="why do they call them dle's when they're anything but?"
+    subtitle="they call them dle's but they're anything but"
     link="https://eferg.us/fermidle"
   >
     <div>
@@ -78,12 +78,16 @@
     <p>
       Everyone knows dark mode is best. Or something. But what if... you had the
       option to choose? Well, some brilliant people have decided to make that
-      dream a reality, and I decided to try doing it using only CSS, without
-      using any JS.
+      dream a reality, and I decided to challenge myself to do it using only
+      CSS, without using any JS.
     </p>
   </Project>
   <!-- TODO: link -->
-  <Project title="No-JS mobile menu" subtitle="Writeup" link="">
+  <Project
+    title="No-JS mobile menu"
+    subtitle="Writeup"
+    link="/projects/no-js/menu"
+  >
     <p>
       Mobile pop-out menus are super nice, but you'd expect to need JS for
       something that complex. But what if... you didn't? Similarly to my no-JS
@@ -99,7 +103,8 @@
     <p>
       I wanted to understand how backpropagation works, so I built a
       backpropagation algorithm in python using numpy. It's not exactly
-      high-speed.
+      high-speed, but it gets reasonable results for a basic feed-forward
+      network on the MNIST dataset.
     </p>
   </Project>
   <Project
@@ -127,8 +132,11 @@
 <style lang="postcss">
   div#grid {
     gap: 1em;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(90vw, 24rem), 1fr));
     grid-auto-rows: 24rem;
+    justify-content: center;
+    @apply max-w-4xl;
   }
 </style>
