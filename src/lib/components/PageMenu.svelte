@@ -25,8 +25,6 @@
       document.addEventListener("touchmove", listener);
     };
   });
-
-  $: console.log({ open });
 </script>
 
 <label bind:this={label} class={clsx("hover:cursor-pointer", { adaptive })}>
@@ -54,14 +52,16 @@
     </svg>
   </div>
 
-  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-  <div
-    class={clsx("clip", {
-      adaptive,
-    })}
-  >
-    <div class="menu">
-      <slot />
+  <div class="relative">
+    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+    <div
+      class={clsx("clip", {
+        adaptive,
+      })}
+    >
+      <div class="menu">
+        <slot />
+      </div>
     </div>
   </div>
 </label>
@@ -71,22 +71,19 @@
   label {
     @apply w-full relative;
   }
-  label input:checked ~ div > div.menu {
+  label input:checked ~ div div.menu {
     transform: translateY(0);
-  }
-  input.menu:checked ~ .title {
-    opacity: 0;
   }
 
   /* position/style */
-  div.title {
-    @apply transition-opacity opacity-100 flex items-center grow;
-  }
   div.menu {
     @apply transition-transform -translate-y-full overflow-auto pointer-events-auto w-full max-h-screen;
   }
+  div.title {
+    @apply transition-opacity opacity-100 flex items-center grow;
+  }
   div.bar {
-    @apply flex justify-stretch items-center p-2 w-full;
+    @apply flex justify-stretch items-center p-2 w-full relative;
   }
   div.clip {
     @apply absolute top-0 overflow-hidden pointer-events-none w-full;

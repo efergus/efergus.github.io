@@ -4,7 +4,7 @@
 <div id="menu_bar">
   <label>
     <input type="checkbox" />
-    <div id="screen">
+    <div id="clip">
       <div id="menu">
         <p>Here is a menu</p>
         <p>That is tall</p>
@@ -28,8 +28,9 @@
   div#menu {
     transform: translateY(-100%);
   }
-  div#screen {
+  div#clip {
     position: absolute;
+    left: 0px;
     top: 0px;
     width: 100%;
     overflow: hidden;

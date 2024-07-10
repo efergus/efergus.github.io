@@ -1,5 +1,7 @@
 # SvelteKit
 
+Initialize a directory with `SvelteKit`
+
 ```sh
 npm create svelte@latest
 ```
@@ -8,11 +10,15 @@ Also ensure `.svelte-kit` is added to `.gitignore`
 
 ## Static Adapter
 
+Also install the staic adapter, which enables building the static site GitHub pages needs
+
 ```sh
 npm i -D @sveltejs/adapter-static
 ```
 
 ## Modify svelte.config.js
+
+Add the static adapter to `svelte.config.js` and set the options for the adapter
 
 ```js
 import adapter from "@sveltejs/adapter-static";
@@ -38,11 +44,15 @@ export default config;
 
 ## Add +layout.js
 
+This is necessary to get the static site generation to work properly:
+
 ```js
 export const prerender = true;
 ```
 
 # If using tailwind:
+
+I like using tailwind, and the steps to get it set up can be non-obvious:
 
 ## Install tailwind & friends
 
@@ -87,36 +97,6 @@ export default {
 
 ```html
 <style lang="postcss">
-```
-
-# Using colors w/ tailwind
-
-## tailwind.config.js
-
-```js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./src/**/*.{html,js,ts,svelte}"],
-  theme: {
-    extend: {
-      strokeWidth: {
-        3: "3px",
-      },
-    },
-
-    colors: {
-      primary: "rgb(var(--color-primary) / <alpha-value>)",
-      secondary: "rgb(var(--color-secondary) / <alpha-value>)",
-      contrast: "rgb(var(--color-contrast) / <alpha-value>)",
-      "contrast-secondary":
-        "rgb(var(--color-contrast-secondary) / <alpha-value>)",
-      theme: "rgb(var(--color-theme) / <alpha-value>)",
-      white: "#ffffff",
-      black: "#000000",
-    },
-  },
-  plugins: [],
-};
 ```
 
 # Add .github/workflows/deploy.yml

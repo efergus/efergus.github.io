@@ -83,7 +83,7 @@
   </Card>
   <p>
     That's the basic idea! You just store the state of the menu in the checkbox,
-    and it's perfectly interactible.
+    and it's perfectly interactible automatically.
   </p>
 
   <h2>Complications</h2>
@@ -141,7 +141,8 @@
     button. That is also done entirely in CSS. It works similarly to how the
     menu itself does, except it animates SVG <code>line</code>s. I won't go into
     detail here, but if you're interested check out the GitHub repo for this
-    page <a>here</a>
+    site
+    <a href="https://github.com/efergus/efergus.github.io/tree/main">here</a>.
   </p>
 
   <h2>Why bother?</h2>
@@ -150,4 +151,22 @@
     are waiting for JS to load because your site is bloated, or on a
     micro-browser, or have it disabled for security reasons.
   </p>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>
+      This obviously isn't everything involved in the exact menu on this site,
+      but it's enough to get you close. There's a ton of customization you could
+      do
+    </li>
+    <li>
+      Firefox can be a bit finnicky with absolute positioning/sizing, so make
+      sure whatever you do works there
+    </li>
+    <li>
+      If you want to put other form elements in the menu, you'll want to use a
+      different approach. Using <code>:has</code> like I allude to above is likely
+      what you would want.
+    </li>
+  </ul>
 </div>

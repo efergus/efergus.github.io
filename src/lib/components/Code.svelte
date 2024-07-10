@@ -1,6 +1,13 @@
 <script lang="ts">
-  export let source = "";
-  export let lang = "";
+  import Highlight from "svelte-highlight";
+  import atom from "svelte-highlight/styles/atom-one-dark";
+
+  export let source: string;
+  export let lang: any;
 </script>
 
-<pre><code class={lang ? `language-${lang}` : ""}>{source}</code></pre>
+<svelte:head>
+  {@html atom}
+</svelte:head>
+
+<Highlight language={lang} code={source} />
