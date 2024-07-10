@@ -6,9 +6,9 @@
 <div class="flex flex-col gap-2 h-full max-w-4xl text-lg">
   <div class="flex justify-between items-center emphasize pb-1">
     <h1>About Me</h1>
-    <a href="https://www.linkedin.com/in/ethan-ferguson-112011193/"
-      ><img src={personality} alt="Me" class="w-12 h-12 rounded-full" /></a
-    >
+    <a href="https://www.linkedin.com/in/ethan-ferguson-112011193/">
+      <img src={personality} alt="Me" class="w-12 h-12 rounded-full" />
+    </a>
   </div>
   <p>
     I'm a Software Engineer at Jahnel Group. I studied CS and Cybersecurity at

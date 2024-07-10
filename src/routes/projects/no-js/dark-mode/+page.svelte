@@ -1,5 +1,8 @@
 <script lang="ts">
   import Card from "$lib/components/Card.svelte";
+  import js from "svelte-highlight/languages/javascript";
+  import xml from "svelte-highlight/languages/xml";
+  import css from "svelte-highlight/languages/css";
 
   import mediaQuery from "./media-query.css?raw";
   import exampleJs from "./example-js.txt?raw";
@@ -26,12 +29,12 @@
       you want the theme to be based on the user's system preferences. There's
       built-in CSS just for that purpose:
     </p>
-    <pre><code>{mediaQuery}</code></pre>
+    <Code source={mediaQuery} lang={css} />
     <p>
       But what if we want to let the user toggle dark mode with a button? Well,
       that's still easy if you're willing to use JavaScript:
     </p>
-    <pre><code>{exampleJs}</code></pre>
+    <Code source={exampleJs} lang={js} />
     <p>
       With a little tweaking, we could even make that support the user's system
       preference. But what if we did something a little... weirder. A little
@@ -63,7 +66,10 @@
             <div class="flex justify-between rounded-lg p-4">
               <div>
                 And what's this? A dark mode button within the dark modes?
-                Should you even dare to click it?
+                Should you even dare to click it? <span class="text-contrast/60"
+                  >Is having nested dark mode selectors even useful??
+                  <span class="text-sm">(probably not)</span>
+                </span>
               </div>
               <div class="theme-focus flex">
                 <DarkModeButton />
@@ -88,26 +94,28 @@
       <a
         href="https://stackoverflow.com/questions/2497146/is-css-turing-complete"
         >CSS is turing complete</a
-      >, you know. Not that it helps us here. What does help us is the
+      >, you know. Not that it helps us here. Also calling it turing complete is
+      a bit of a stretch. Anyways, what does help us is the
       <code>:has()</code>
       selector. We can set the CSS of an element based on its children! You could
       also make this kind of thing work with
-      <code>~</code> if you're so inclined, but it's not as nice for this usecase.
-      This has only been majorly supported for a few years, so this might not work
-      for people who are really lagging on their browser updates. Even still, we
-      can support their system preference and hide the button for them. The idea
-      is really simple:
+      <code>~</code> if you're so inclined, but it's not as nice for this
+      usecase.
+      <code>:has()</code> has only been majorly supported for a few years, so this
+      might not work for people who are really lagging on their browser updates.
+      Even still, we can support their system preference and hide the button for
+      them, or have a JS fallback. The idea is really simple:
     </p>
     <div class="-m-2 p-2 rounded-lg">
       <div class="flex justify-between items-end theme-focus">
         <p>HTML:</p>
         <DarkModeButton />
       </div>
-      <Code source={exampleHtml} lang={"html"} />
+      <Code source={exampleHtml} lang={xml} />
     </div>
     <div>
       <p>CSS:</p>
-      <Code source={exampleCSS} lang={"css"} />
+      <Code source={exampleCSS} lang={css} />
     </div>
     <p>
       We create the dark and light classes, apply them to the root element based
