@@ -9,6 +9,7 @@
   import jsExample from "./JsExample.svelte?raw";
   import noJsExample from "./NoJsExample.svelte?raw";
   import noJsFixed from "./NoJsFixed.svelte?raw";
+  import Code from "$lib/components/Code.svelte";
 
   const ignore = (str: string) => {
     const re = /\n(\n|\s)*\/\* ignore(\n|.)*ignore \*\/(\n|\s)*\n/g;
@@ -56,7 +57,7 @@
     like this: (Note this is in Svelte, so I can show you the result easily. If you're
     not familiar with it that's ok, it should still be easy to follow)
   </p>
-  <pre><code>{ignore(jsExample)}</code></pre>
+  <Code source={ignore(jsExample)} lang="js" />
   <Card>
     <JsExample />
   </Card>
@@ -77,7 +78,7 @@
     that information. It makes creating custom checkboxes very straightforwad,
     and is what we'll use to make this menu.
   </p>
-  <pre><code>{ignore(noJsExample)}</code></pre>
+  <Code source={ignore(noJsExample)} lang="xml" />
   <Card>
     <NoJsExample />
   </Card>
@@ -121,7 +122,7 @@
     We can fix the menu size by using another <code>div</code>
   </p>
 
-  <pre><code>{ignore(noJsFixed)}</code></pre>
+  <Code source={ignore(noJsFixed)} lang="xml" />
   <Card title="Fixed" scroll={false}>
     <NoJsFixed />
   </Card>
@@ -148,8 +149,8 @@
   <h2>Why bother?</h2>
   <p>
     Well, for fun, mostly. But also, because not everyone has JS! Some people
-    are waiting for JS to load because your site is bloated, or on a
-    micro-browser, or have it disabled for security reasons.
+    are waiting for JS to load because your site is bloated, or they're on a
+    micro-browser, or they have it disabled for security reasons.
   </p>
 
   <h2>Notes</h2>
@@ -157,11 +158,11 @@
     <li>
       This obviously isn't everything involved in the exact menu on this site,
       but it's enough to get you close. There's a ton of customization you could
-      do
+      do to make it behave just the way you like.
     </li>
     <li>
       Firefox can be a bit finnicky with absolute positioning/sizing, so make
-      sure whatever you do works there
+      sure whatever you do works there.
     </li>
     <li>
       If you want to put other form elements in the menu, you'll want to use a
