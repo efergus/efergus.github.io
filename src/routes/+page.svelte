@@ -18,7 +18,7 @@
   };
 </script>
 
-<div class="flex flex-col gap-2 h-full max-w-4xl text-lg">
+<div class="flex flex-col gap-2 h-full max-w-3xl text-lg">
   <div class="flex justify-between items-center emphasize pb-1">
     <h1>About Me</h1>
     <a href="https://www.linkedin.com/in/ethan-ferguson-112011193/">

@@ -22,8 +22,6 @@
   export let lang: keyof typeof languages;
 
   const language = languages[lang];
-
-  console.log({ lang });
 </script>
 
 <svelte:head>
