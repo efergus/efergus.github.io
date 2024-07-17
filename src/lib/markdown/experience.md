@@ -68,7 +68,7 @@
 
 *August 2019 - May 2023*
 
-Bachelor of Science in Computer Science, *Summa Cum Laude* (GPA: 3.98)
+- Bachelor of Science in Computer Science, *Summa Cum Laude* (GPA: 3.98)
 
 ## Certifications
 

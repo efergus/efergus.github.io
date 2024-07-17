@@ -29,11 +29,12 @@
     I'm a Software Engineer at Jahnel Group. I studied CS and Cybersecurity at
     Binghamton University. I have published and presented at ACM (Association
     for Computing Machinery) and IEEE (Institute of Electrical and Electronics
-    Engineers) conferences. I have a love for exploration and discovery that
-    thrives in both the information-rich world of technology and the great
-    outdoors.
+    Engineers) conferences. I've also worked for CodeSecure and Sonnet Software,
+    and I love working on interesting projects. If you've got something cool for
+    me to do, let's connect! While you're here, check out some of my
+    <a href="/projects">projects</a>!
   </p>
-  <p>
+  <!-- <p>
     I currently develop full-stack applications with Jahnel Group, tackling the
     hardest problems they have to throw at me. I worked as an intern with
     Grammatech developing software for binary analysis and identification. I
@@ -55,7 +56,7 @@
     project management. Exploration has also driven creative projects, such as
     art and photography. If you've got something cool for me to do, let's
     connect.
-  </p>
+  </p> -->
   <div class="flex gap-2 justify-end items-center flex-wrap">
     <button
       class={clsx(
