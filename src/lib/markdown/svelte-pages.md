@@ -6,7 +6,7 @@ Initialize a directory with `SvelteKit`
 npm create svelte@latest
 ```
 
-Also ensure `.svelte-kit` is added to `.gitignore`
+Also ensure `.svelte-kit` is added to your `.gitignore` if using git
 
 ## Static Adapter
 
@@ -21,7 +21,7 @@ npm i -D @sveltejs/adapter-static
 Add the static adapter to `svelte.config.js` and set the options for the adapter
 
 ```js
-import adapter from "@sveltejs/adapter-static";
+import adapter from "@sveltejs/adapter-static"; // <- this is the important bit
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -47,6 +47,7 @@ export default config;
 This is necessary to get the static site generation to work properly:
 
 ```js
+// +layout.js
 export const prerender = true;
 ```
 
@@ -71,13 +72,14 @@ export default {
   kit: {
     adapter: adapter(),
   },
-  preprocess: vitePreprocess(),
+  preprocess: vitePreprocess(), // <- this guy
 };
 ```
 
 ## Add app.css:
 
 ```css
+/* app.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -85,6 +87,7 @@ export default {
 
 ## Add +layout.svelte:
 
+In `+layout.svelte`:
 ```svelte
 <script>
   import "../app.css";
@@ -95,13 +98,15 @@ export default {
 
 ## Add to style tags:
 
+Add this to any style tags if you want to use tailwind constructs like `@apply`:
 ```html
 <style lang="postcss">
 ```
 
 # Add .github/workflows/deploy.yml
 
-```
+Create `.github/workflows/deploy.yml`:
+```yaml
 name: Deploy to GitHub Pages
 
 on:
