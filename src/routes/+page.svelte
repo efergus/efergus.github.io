@@ -1,6 +1,21 @@
 <script lang="ts">
   import linkedin from "$lib/assets/In-Blue-48.png";
   import personality from "$lib/assets/Personality.jpg";
+  import CheckIcon from "$lib/icons/CheckIcon.svelte";
+  import CopyIcon from "$lib/icons/CopyIcon.svelte";
+  import MailIcon from "$lib/icons/MailIcon.svelte";
+  import clsx from "clsx";
+
+  const email_domain = "gmail.com";
+  const email_user = "ethanmferguson";
+  let email = email_domain + email_user;
+  $: email_ready = email.includes("@");
+  $: copied = false;
+
+  const getEmail = () => {
+    email = [email_user, email_domain].join("@");
+    return email;
+  };
 </script>
 
 <div class="flex flex-col gap-2 h-full max-w-4xl text-lg">
@@ -41,15 +56,64 @@
     art and photography. If you've got something cool for me to do, let's
     connect.
   </p>
-  <a
-    href="https://www.linkedin.com/in/ethan-ferguson-112011193/"
-    target="_blank"
-    class="self-end"
-  >
-    <img
-      src={linkedin}
-      alt="LinkedIn Logo"
-      class="h-12 w-12 border-transparent hover:border-highlight border rounded"
-    />
-  </a>
+  <div class="flex gap-2 justify-end items-center flex-wrap">
+    <button
+      class={clsx(
+        "flex items-center gap-4 rounded-md p-2 bg-subtle",
+        email_ready && "hover:bg-subtle/75 border-primary"
+      )}
+      on:click={() => {
+        if (email_ready) {
+          navigator.clipboard.writeText(email);
+          copied = true;
+          setTimeout(() => (copied = false), 800);
+        } else {
+          getEmail();
+        }
+      }}
+    >
+      {#if email_ready}
+        <div class="center relative text-sm">
+          <p
+            class={clsx(
+              "transition-opacity md:text-base ml-1",
+              email_ready ? "opacity-100" : "opacity-0",
+              copied && "animate-peeked"
+            )}
+          >
+            {email}
+          </p>
+          <div class="absolute inset-0 center">
+            <p class={clsx(copied ? "animate-peek" : "opacity-0")}>Copied!</p>
+          </div>
+        </div>
+        <div class="relative">
+          <div class={clsx(copied && "animate-peeked")}>
+            <CopyIcon width={48} />
+          </div>
+          <div
+            class={clsx(
+              "absolute inset-0 text-confirm rounded-lg flex justify-center items-center",
+              copied ? "animate-peek" : "opacity-0"
+            )}
+          >
+            <CheckIcon size={36} stroke={3} />
+          </div>
+        </div>
+      {:else}
+        <MailIcon width={48} />
+      {/if}
+    </button>
+    <a
+      href="https://www.linkedin.com/in/ethan-ferguson-112011193/"
+      target="_blank"
+      class="self-end p-2 bg-subtle rounded-lg hover:bg-subtle/75"
+    >
+      <img
+        src={linkedin}
+        alt="LinkedIn Logo"
+        class="h-12 w-12 border-transparent hover:border-highlight border rounded"
+      />
+    </a>
+  </div>
 </div>
