@@ -1,8 +1,5 @@
 <script lang="ts">
   import Card from "$lib/components/Card.svelte";
-  import js from "svelte-highlight/languages/javascript";
-  import xml from "svelte-highlight/languages/xml";
-  import css from "svelte-highlight/languages/css";
 
   import mediaQuery from "./media-query.css?raw";
   import exampleJs from "./example-js.txt?raw";
@@ -29,12 +26,12 @@
       you want the theme to be based on the user's system preferences. There's
       built-in CSS just for that purpose:
     </p>
-    <Code source={mediaQuery} lang={css} />
+    <Code source={mediaQuery} lang={"css"} />
     <p>
       But what if we want to let the user toggle dark mode with a button? Well,
       that's still easy if you're willing to use JavaScript:
     </p>
-    <Code source={exampleJs} lang={js} />
+    <Code source={exampleJs} lang={"js"} />
     <p>
       With a little tweaking, we could even make that support the user's system
       preference. But what if we did something a little... weirder. A little
@@ -111,11 +108,11 @@
         <p>HTML:</p>
         <DarkModeButton />
       </div>
-      <Code source={exampleHtml} lang={xml} />
+      <Code source={exampleHtml} lang={"xml"} />
     </div>
     <div>
       <p>CSS:</p>
-      <Code source={exampleCSS} lang={css} />
+      <Code source={exampleCSS} lang={"css"} />
     </div>
     <p>
       We create the dark and light classes, apply them to the root element based

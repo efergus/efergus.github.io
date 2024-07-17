@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <div id="menu_bar">
   <label>
     <input type="checkbox" />
