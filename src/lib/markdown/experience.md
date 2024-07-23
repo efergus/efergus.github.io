@@ -6,12 +6,12 @@
 
 *June 2023 - Present*
 
-- Led penetration testing initiatives on various cloud applications, identifying
-  and mitigating critical OWASP vulnerabilities including stored XSS, unsecured
-  endpoints, logic flaws, and misconfigurations.
 - Engineered secure cloud applications using SQL, NodeJS, AWS, and Google Cloud,
   implementing robust security measures and ensuring compliance with industry
   standards.
+- Led penetration testing initiatives on various cloud applications, identifying
+  and mitigating critical OWASP vulnerabilities including stored XSS, unsecured
+  endpoints, logic flaws, and misconfigurations.
 - Collaborated with cross-functional teams to design, develop, and deploy
   full-stack solutions, enhancing application performance and security.
 
@@ -46,7 +46,8 @@
 
 ### WebGPU-SPY
 
-- First author of groundbreaking research discovering a novel GPU cache side channel using WebGPU and JavaScript.
+- First author of groundbreaking research discovering a novel GPU cache side
+  channel using WebGPU and JavaScript.
 - Achieved 90% (state-of-the-art) accuracy in performing website fingerprinting
   through the identified side channel, demonstrating the potential for
   significant security implications.
