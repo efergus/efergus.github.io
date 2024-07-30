@@ -6,14 +6,12 @@
 
 *June 2023 - Present*
 
-- Engineered secure cloud applications using SQL, NodeJS, AWS, and Google Cloud,
-  implementing robust security measures and ensuring compliance with industry
-  standards.
+- Engineered secure, performant cloud applications using TypeScript, React, SQL,
+  NodeJS, AWS, and Google Cloud, implementing robust security measures and
+  ensuring compliance with industry  standards.
 - Led penetration testing initiatives on various cloud applications, identifying
   and mitigating critical OWASP vulnerabilities including stored XSS, unsecured
   endpoints, logic flaws, and misconfigurations.
-- Collaborated with cross-functional teams to design, develop, and deploy
-  full-stack solutions, enhancing application performance and security.
 
 ### CodeSecure
 
@@ -21,12 +19,15 @@
 
 *June 2021 - Dec 2022*
 
-- Developed automated tools for the analysis of compiled binaries to generate a
-  Software Bill of Materials (SBOM) without requiring the original source code,
-  enhancing software transparency and security.
+- Engineered full-stack microservices application for performing binary analysis
+  using Python, MongoDB, Docker/Docker Compose, GraphQL,  RabbitMQ, gaining
+  expertise of modern full-stack technologies.
+- Developed automated tools for the analysis of compiled C/C++ binaries to
+  generate a Software Bill of Materials (SBOM) without requiring the original
+  source code, enhancing software security.
 - Designed and implemented a data collection pipeline to automate the
-  acquisition of ground truth binaries, streamlining the SBOM generation process
-  and enhancing efficiency.
+  acquisition of ground truth binaries including compiling code with LLVM and
+  GCC and unpacking system packages, increasing efficiency.
 
 ### Sonnet Software
 
@@ -35,7 +36,7 @@
 *August 2019 - August 2020*
 
 - Modified a high-performance RF simulation tool written in C/ASM to ensure
-  compatibility with MacOS and Apple M1 architecture, improving software
+  compatibility with MacOS and Apple M-series (ARM) architecture, improving software
   performance and accessibility.
 - Updated the MATLAB interface to adopt a new XML data storage format, improving
   data management and integration capabilities.
@@ -47,7 +48,8 @@
 ### WebGPU-SPY
 
 - First author of groundbreaking research discovering a novel GPU cache side
-  channel using WebGPU and JavaScript.
+  channel using WebGPU and JavaScript, unlike any attacks previously in the
+  literature.
 - Achieved 90% (state-of-the-art) accuracy in performing website fingerprinting
   through the identified side channel, demonstrating the potential for
   significant security implications.
@@ -73,5 +75,6 @@
 
 ## Certifications
 
+- [Google Professional Cloud Security Engineer](https://www.credly.com/badges/8364ceb0-c451-47a5-a320-2b0a4c348f5b/public_url)
 - [AWS Cloud Practitioner](https://cp.certmetrics.com/amazon/en/public/verify/credential/26522ad1191645f59b6b98fe22efb9b3)
 - [Google Cloud Digital Leader](https://www.credly.com/badges/afaaad60-89a0-4da7-84d7-e24f94ab22c3/linked_in_profile)
