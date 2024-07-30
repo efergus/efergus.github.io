@@ -32,38 +32,31 @@ export default {
 			},
 			animation: {
 				'peek': 'peek 0.6s ease-out forwards',
-				'peeked': 'peeked 0.8s ease-out forwards'
+				'peeked': 'peeked 0.6s ease-out forwards'
 			},
 			keyframes: {
 				'peek': {
 					'0%': {
-						opacity: '0',
-						scale: '1'
+						opacity: '0'
 					},
-					'40%': {
+					'10%': {
 						opacity: '1'
 					},
-					'50%': {
-						opacity: '1',
-						scale: '1.6'
-					},
 					'90%': {
-						opacity: '0.5',
-						scale: '1.8'
+						opacity: '1'
 					},
 					'100%': {
-						opacity: '0',
-						scale: '1.8'
+						opacity: '0'
 					}
 				},
 				'peeked': {
 					'0%': {
 						opacity: '1'
 					},
-					'20%': {
+					'10%': {
 						opacity: '0'
 					},
-					'70%': {
+					'90%': {
 						opacity: '0'
 					},
 					'100%': {
