@@ -7,8 +7,9 @@
 *June 2023 - Present*
 
 - Engineered secure, performant cloud applications using TypeScript, React, SQL,
-  NodeJS, AWS, and Google Cloud, implementing robust security measures and
-  ensuring compliance with industry  standards.
+  NodeJS, AWS, and Google Cloud.
+- Implemented robust security measures and ensured compliance with industry
+  standards.
 - Led penetration testing initiatives on various cloud applications, identifying
   and mitigating critical OWASP vulnerabilities including stored XSS, unsecured
   endpoints, logic flaws, and misconfigurations.
@@ -61,9 +62,16 @@
 
 - Utilized SIMD, CUDA, and C++ to create high-throughput, just-in-time data generation enabling machine learning of new data types on HPC systems.
 - Architected a ResNet-based deep neural network for molecule generation using PyTorch.
-- Published in IEEE e-Science 2024 and presented at the ACS Physics March Meeting 2022.
+- Published in IEEE e-Science 2022 and presented at the ACS Physics March Meeting 2022.
 - Conducted research under the guidance of Prof. Kenneth Chiu.
 - [Paper available on arXiv](https://arxiv.org/abs/2211.08506).
+
+## Skills
+
+- **Languages:** Python, JS, TS, C, C++, Rust, HTML, CSS
+- **Libraries:** PyTorch, Pytest, React, Jest, Sequelize, CUDA, Express, Matplotlib, Three.js, MayaVi
+- **Infra/Tools:** AWS, GCP, Git, Docker, Postgresql, MongoDB, GraphQL,
+  RabbitMQ, Linux, MacOS, Lambda/Serverless, Node.js, HTTP, REST, CI/CD, DevOps
 
 ## Education
 

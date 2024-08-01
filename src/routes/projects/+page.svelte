@@ -49,6 +49,20 @@
     <img src={molecule} alt="The principle of ParticleGrid" />
   </Project>
   <Project
+    title="Fermidle"
+    subtitle="they call them dle's but they're anything but"
+    link="https://eferg.us/fermidle"
+  >
+    <div>
+      <p>How many golf balls would it take to fill the oceans?</p>
+      <p>
+        How many Empire State Buildings would it take to reach the altitude of
+        the ISS?
+      </p>
+      <p>Try to guess the order of magnitude of absurd physics problems!</p>
+    </div>
+  </Project>
+  <Project
     title="No-JS dark mode toggle"
     subtitle="Writeup"
     link="/projects/no-js/dark-mode"
@@ -71,20 +85,6 @@
       dark mode, I made a mobile menu that doesn't need any JS to function, and
       it even has a fancy animation! It doesn't even use <code>calc()</code>!
     </p>
-  </Project>
-  <Project
-    title="Fermidle"
-    subtitle="they call them dle's but they're anything but"
-    link="https://eferg.us/fermidle"
-  >
-    <div>
-      <p>How many golf balls would it take to fill the oceans?</p>
-      <p>
-        How many Empire State Buildings would it take to reach the altitude of
-        the ISS?
-      </p>
-      <p>Try to guess the order of magnitude of absurd physics problems!</p>
-    </div>
   </Project>
   <Project
     title="Static Svlete on GitHub Pages"

@@ -18,7 +18,7 @@
     class="theme-focus bg-primary p-1 z-50 hidden md:flex justify-between"
   >
     <h1 class="p-3">Ethan Ferguson</h1>
-    <DarkModeButton bind:checked={invert} />
+    <DarkModeButton bind:checked={invert} color="white" />
   </header>
   <div class="theme-focus sticky top-0 bg-secondary w-full z-40">
     <PageMenu>
@@ -31,9 +31,8 @@
         <NavLink href="/projects">Projects</NavLink>
         <NavLink href="/photography">Photography</NavLink>
         <NavLink href="/art">Art</NavLink>
-        <div class="flex items-center gap-2 md:hidden">
-          <h2>Toggle dark mode:</h2>
-          <DarkModeButton bind:checked={invert} />
+        <div class="flex justify-end items-center gap-2 md:hidden">
+          <DarkModeButton bind:checked={invert} color="white" />
         </div>
       </div>
     </PageMenu>
