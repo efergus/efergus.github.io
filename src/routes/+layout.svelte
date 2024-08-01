@@ -17,7 +17,7 @@
   <header
     class="theme-focus bg-primary p-1 z-50 hidden md:flex justify-between"
   >
-    <h1 class="p-3">Ethan Ferguson</h1>
+    <h1 class="p-3 font-serif">Ethan Ferguson</h1>
     <DarkModeButton bind:checked={invert} color="white" />
   </header>
   <div class="theme-focus sticky top-0 bg-secondary w-full z-40">
