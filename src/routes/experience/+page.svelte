@@ -13,6 +13,6 @@
 
 <style lang="postcss">
   .markdown.experience > :global(h2) {
-    @apply pb-0.5 border-b-2 border-b-highlight;
+    @apply pb-0.5 border-b-4 border-b-highlight;
   }
 </style>

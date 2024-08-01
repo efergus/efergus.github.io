@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,ts,svelte}'],
@@ -27,6 +29,11 @@ export default {
 			'3xl': ['2.5rem', '3.2rem']
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Lato', ...defaultTheme.fontFamily.sans],
+				header: ['"Noto Sans"', 'Lato', ...defaultTheme.fontFamily.sans],
+				serif: ['"Playfair Display"', ...defaultTheme.fontFamily.serif]
+			},
 			strokeWidth: {
 				3: '3px'
 			},

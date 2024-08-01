@@ -54,7 +54,7 @@
 </svelte:head>
 
 <div class="p-10 pb-16">
-  <h2 class="border-b-2 border-b-highlight max-w-lg">
+  <h2 class="border-b-4 border-b-highlight max-w-lg">
     Here is some of my photography:
   </h2>
 </div>
