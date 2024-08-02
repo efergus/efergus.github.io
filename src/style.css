@@ -10,7 +10,7 @@
   }
 
   h3 {
-    @apply text-xl font-semibold font-serif;
+    @apply text-xl text-pop font-semibold font-serif;
   }
 
   input {

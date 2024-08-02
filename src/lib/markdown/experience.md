@@ -13,6 +13,11 @@
 - Led penetration testing initiatives on various cloud applications, identifying
   and mitigating critical OWASP vulnerabilities including stored XSS, unsecured
   endpoints, logic flaws, and misconfigurations.
+- Worked closely with product managers, designers, and clients to translate
+  complex technical concepts into user-friendly features.
+- Successfully turned around a struggling project by identifying key issues,
+  implementing effective solutions, and rallying the team, resulting in on-time
+  delivery and client satisfaction.
 
 ### CodeSecure
 
@@ -29,6 +34,8 @@
 - Designed and implemented a data collection pipeline to automate the
   acquisition of ground truth binaries including compiling code with LLVM and
   GCC and unpacking system packages, increasing efficiency.
+- Collaborated effectively with cross-functional teams to deliver a high-quality
+  application at light speed.
 
 ### Sonnet Software
 
