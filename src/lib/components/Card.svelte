@@ -9,7 +9,7 @@
   export let scroll = true;
 </script>
 
-<ConditionalLink {link}>
+<ConditionalLink {link} external={true}>
   <div
     class="flex flex-col border rounded-lg shadow px-4 py-2 h-full w-full gap-2"
   >
