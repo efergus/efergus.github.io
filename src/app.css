@@ -14,6 +14,7 @@
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
     --color-subtle: 223 243 253;
+    --color-pop: 0 47 108;
 
     --color-confirm: 66 245 69;
     @apply bg-theme;
@@ -28,6 +29,7 @@
     --color-contrast-secondary: 255 255 255;
     --color-highlight: 129 212 250;
     --color-subtle: 12 18 72;
+    --color-pop: 129 212 250;
 
     @apply bg-theme;
   }

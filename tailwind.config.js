@@ -1,20 +1,16 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
+const colors = ['primary', 'secondary', 'theme', 'contrast', 'contrast-primary', 'contrast-secondary', 'highlight', 'subtle', 'confirm', 'pop'];
+
+const colorDefinitions = Object.fromEntries(colors.map(color=>[color, `rgb(var(--color-${color}) / <alpha-value>)`]))
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,ts,svelte}'],
 	theme: {
 
 		colors: {
-			primary: 'rgb(var(--color-primary) / <alpha-value>)',
-			secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
-			theme: 'rgb(var(--color-theme) / <alpha-value>)',
-			contrast: 'rgb(var(--color-contrast) / <alpha-value>)',
-			'contrast-primary': 'rgb(var(--color-contrast-primary) / <alpha-value>)',
-			'contrast-secondary': 'rgb(var(--color-contrast-secondary) / <alpha-value>)',
-			highlight: 'rgb(var(--color-highlight) / <alpha-value>)',
-			subtle: 'rgb(var(--color-subtle) / <alpha-value>)',
-			confirm: 'rgb(var(--color-confirm) / <alpha-value>)',
+			...colorDefinitions,
 			white: '#ffffff',
 			black: '#000000',
       		transparent: '#00000000'
