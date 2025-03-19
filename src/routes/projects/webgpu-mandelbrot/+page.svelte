@@ -1,11 +1,13 @@
 <script>
     import Code from "$lib/components/Code.svelte";
+    import { onMount } from "svelte";
     const WORKGROUP_SIZE = 8;
 
     // Camera state
     let scale = 3.0;
     let offsetX = -0.7;
     let offsetY = 0.0;
+    let exponent = 2.0;
     let isDragging = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
@@ -66,8 +68,32 @@
                     scale: f32,
                     offset_x: f32,
                     offset_y: f32,
+                    power: f32,
                 }
                 @group(0) @binding(1) var<uniform> params: Params;
+
+                fn complex_pow(z_re: f32, z_im: f32, n: f32) -> vec2<f32> {
+                    // Handle integer powers more efficiently
+                    if (n == 2.0) {
+                        return vec2<f32>(
+                            z_re * z_re - z_im * z_im,
+                            2.0 * z_re * z_im
+                        );
+                    }
+                    
+                    // For non-integer powers, use polar form
+                    let r = sqrt(z_re * z_re + z_im * z_im);
+                    if (r == 0.0) {
+                        return vec2<f32>(0.0, 0.0);
+                    }
+                    let theta = atan2(z_im, z_re);
+                    let r_n = pow(r, n);
+                    let theta_n = n * theta;
+                    return vec2<f32>(
+                        r_n * cos(theta_n),
+                        r_n * sin(theta_n)
+                    );
+                }
 
                 @compute @workgroup_size(${WORKGROUP_SIZE}, ${WORKGROUP_SIZE})
                 fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
@@ -96,16 +122,13 @@
 
                     // Iterate until escape or max iterations reached
                     for (; i < max_iterations; i++) {
-                        let z_re2 = z_re * z_re;
-                        let z_im2 = z_im * z_im;
+                        let new_z = complex_pow(z_re, z_im, params.power);
+                        z_re = new_z.x + c_re;
+                        z_im = new_z.y + c_im;
 
-                        if (z_re2 + z_im2 > 4.0) {
+                        if (z_re * z_re + z_im * z_im > 4.0) {
                             break;
                         }
-
-                        let z_re_new = z_re2 - z_im2 + c_re;
-                        z_im = 2.0 * z_re * z_im + c_im;
-                        z_re = z_re_new;
                     }
 
                     // Color based on iteration count
@@ -114,7 +137,6 @@
                         0.5 + 0.5 * cos(3.0 + t * 3.0),
                         0.5 + 0.5 * cos(3.0 + t * 4.0),
                         0.5 + 0.5 * cos(3.0 + t * 5.0),
-                        // t, t, t, 1.0
                         1.0
                     );
 
@@ -232,7 +254,7 @@
 
         // Create uniform buffer for parameters
         const uniformBuffer = device.createBuffer({
-            size: 24, // 6 * 4 bytes
+            size: 28, // 7 * 4 bytes
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
@@ -244,6 +266,7 @@
             scale, // scale
             offsetX, // offset_x
             offsetY, // offset_y
+            exponent, // power
         ]);
         device.queue.writeBuffer(uniformBuffer, 0, params);
 
@@ -286,6 +309,7 @@
                 scale,
                 offsetX,
                 offsetY,
+                exponent,
             ]);
             device.queue.writeBuffer(uniformBuffer, 0, params);
 
@@ -329,7 +353,7 @@
         // Event listeners for controls
         canvas.addEventListener("wheel", (e) => {
             e.preventDefault();
-            const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
+            const zoomFactor = Math.exp(e.deltaY / 1000);
 
             // Get mouse position in canvas space
             const rect = canvas.getBoundingClientRect();
@@ -429,7 +453,8 @@
             Zoom in enough, and you'll see the image starts to get pixelated.
             This is actually due to the limited precision of 32-bit floating
             point numbers in the shader. Unfortunately, WebGPU does not support
-            64-bit floating point numbers at the time of writing.
+            64-bit floating point numbers at the time of writing, which would
+            allow for much more precision.
         </p>
         <p>
             To view the code, head to <a
@@ -451,6 +476,20 @@
             <Code source={"google-chrome --enable-unsafe-webgpu"} lang={"sh"} />
         </div>
     {:else}
+        <div class="controls">
+            <label>
+                Exponent:
+                <input
+                    type="range"
+                    min="1"
+                    max="14"
+                    step="0.1"
+                    bind:value={exponent}
+                    on:input={render}
+                />
+                <span class="value">{exponent.toFixed(1)}</span>
+            </label>
+        </div>
         <canvas id="webgpu-canvas"></canvas>
     {/if}
 </div>
@@ -475,5 +514,26 @@
     }
     p {
         margin-bottom: 0.7rem;
+    }
+    .controls {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .controls label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .controls input[type="range"] {
+        width: 200px;
+    }
+
+    .controls .value {
+        min-width: 2.5em;
+        text-align: right;
     }
 </style>
