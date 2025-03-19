@@ -1,11 +1,24 @@
 <script>
   import Project from "$lib/components/Card.svelte";
   import molecule from "$lib/assets/particlegrid/mol-representations.png";
+  import mandelbrot from "$lib/assets/mandelbrot/mandelbrot.png";
 </script>
 
 <h1 class="emphasize">Projects and Writeups</h1>
 
 <div id="grid">
+  <Project
+    title="WebGPU Mandelbrot"
+    subtitle="A Mandelbrot set renderer using WebGPU"
+    link="/projects/webgpu-mandelbrot"
+  >
+    <p>
+      WebGPU Mandelbrot is a Mandelbrot set renderer using WebGPU. It uses a
+      compute shader to render the Mandelbrot set and a render pipeline to
+      display it.
+    </p>
+    <img src={mandelbrot} alt="WebGPU Mandelbrot" />
+  </Project>
   <Project
     title="WebGPU-Spy"
     subtitle="Paper: A hardware-based microarchitectural attack"
