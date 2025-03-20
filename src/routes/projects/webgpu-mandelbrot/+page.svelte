@@ -3,6 +3,11 @@
     import { onMount } from "svelte";
     const WORKGROUP_SIZE = 8;
 
+    // Canvas dimensions
+    const width = 540;
+    const height = 360;
+    const size = Math.max(width, height);
+
     // Camera state
     let scale = 3.0;
     let offsetX = -0.7;
@@ -11,6 +16,12 @@
     let isDragging = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
+    let hoverMouseX = 0;
+    let hoverMouseY = 0;
+    let clickedMouseX = 0;
+    let clickedMouseY = 0;
+    let lastMandelbrotUpdate = 0;
+    let lastJuliaUpdate = 0;
 
     let webgpuSupported = true;
     let webgpuError = "";
@@ -144,8 +155,8 @@
             let c_re = params.c_re;
             let c_im = params.c_im;
 
-            var z_re = (f32(x) - width / 2.0) * scale / size + offset_x;
-            var z_im = (f32(y) - height / 2.0) * scale / size + offset_y;
+            var z_re = (f32(x) - width / 2.0) * scale / size;
+            var z_im = (f32(y) - height / 2.0) * scale / size;
             var i: u32 = 0u;
 
             // Iterate until escape or max iterations reached
@@ -167,10 +178,94 @@
                 0.5 + 0.5 * cos(3.0 + t * 5.0),
                 1.0
             );
+            // let color = vec4<f32>(1.0, z_re, z_im, 1.0);
 
             textureStore(output, vec2<u32>(x, y), color);
         }
     `;
+
+    const vertexWgsl = `
+        struct VertexInput {
+            @location(0) position: vec2<f32>,
+        }
+
+        @vertex
+        fn main(input: VertexInput) -> @builtin(position) vec4<f32> {
+            return vec4<f32>(input.position, 0.0, 1.0);
+        }
+    `;
+
+    const fragmentWgsl = `
+        @group(0) @binding(0) var tex: texture_2d<f32>;
+        @group(0) @binding(1) var texSampler: sampler;
+
+        @fragment
+        fn main(@builtin(position) pos: vec4<f32>) -> @location(0) vec4<f32> {
+            return textureSample(tex, texSampler, pos.xy / vec2<f32>(${width}.0, ${height}.0));
+        }
+    `;
+
+    const createRenderPipeline = (device, format) => {
+        return device.createRenderPipeline({
+            layout: "auto",
+            vertex: {
+                module: device.createShaderModule({
+                    code: vertexWgsl,
+                }),
+                entryPoint: "main",
+                buffers: [
+                    {
+                        arrayStride: 8, // 2 floats * 4 bytes
+                        attributes: [
+                            {
+                                format: "float32x2",
+                                offset: 0,
+                                shaderLocation: 0,
+                            },
+                        ],
+                    },
+                ],
+            },
+            fragment: {
+                module: device.createShaderModule({
+                    code: fragmentWgsl,
+                }),
+                entryPoint: "main",
+                targets: [{ format }],
+            },
+            primitive: {
+                topology: "triangle-list",
+            },
+        });
+    };
+
+    const createComputePipeline = (device, module) => {
+        return device.createComputePipeline({
+            layout: "auto",
+            compute: {
+                module,
+                entryPoint: "main",
+            },
+        });
+    };
+
+    const createTexture = (device, width, height) => {
+        return device.createTexture({
+            size: [width, height],
+            format: "rgba8unorm",
+            usage:
+                GPUTextureUsage.STORAGE_BINDING |
+                GPUTextureUsage.TEXTURE_BINDING |
+                GPUTextureUsage.COPY_DST,
+        });
+    };
+
+    const pixelPosToComplex = (x, y) => {
+        return {
+            x: ((x - width / 2) * scale) / size + offsetX,
+            y: ((y - height / 2) * scale) / size + offsetY,
+        };
+    };
 
     async function init() {
         if (!navigator.gpu) {
@@ -192,20 +287,28 @@
         const device = await adapter.requestDevice();
 
         // Setup canvas
-        const canvas = document.getElementById("webgpu-canvas");
-        const context = canvas.getContext("webgpu");
+        const mandelbrotCanvas = document.getElementById("mandelbrot-canvas");
+        const mandelbrotContext = mandelbrotCanvas.getContext("webgpu");
+
+        const juliaCanvas = document.getElementById("julia-canvas");
+        const juliaContext = juliaCanvas.getContext("webgpu");
 
         console.log("Initialized WebGPU");
 
         // Set canvas size
-        const width = 800;
-        const height = 600;
-        canvas.width = width;
-        canvas.height = height;
+        mandelbrotCanvas.width = width;
+        mandelbrotCanvas.height = height;
+        juliaCanvas.width = width;
+        juliaCanvas.height = height;
 
         // Configure canvas format
         const format = navigator.gpu.getPreferredCanvasFormat();
-        context.configure({
+        mandelbrotContext.configure({
+            device,
+            format,
+            alphaMode: "premultiplied",
+        });
+        juliaContext.configure({
             device,
             format,
             alphaMode: "premultiplied",
@@ -217,6 +320,10 @@
         const computeShaderModule = device.createShaderModule({
             label: "Mandelbrot compute shader",
             code: mandelbrotWgsl,
+        });
+        const juliaComputeShaderModule = device.createShaderModule({
+            label: "Julia compute shader",
+            code: juliaWgsl,
         });
 
         console.log("Created compute shader");
@@ -248,174 +355,206 @@
         console.log("Created vertex buffer");
 
         // Create render pipeline
-        const renderPipeline = device.createRenderPipeline({
-            layout: "auto",
-            vertex: {
-                module: device.createShaderModule({
-                    code: `
-                        struct VertexInput {
-                            @location(0) position: vec2<f32>,
-                        }
-
-                        @vertex
-                        fn main(input: VertexInput) -> @builtin(position) vec4<f32> {
-                            return vec4<f32>(input.position, 0.0, 1.0);
-                        }
-                `,
-                }),
-                entryPoint: "main",
-                buffers: [
-                    {
-                        arrayStride: 8, // 2 floats * 4 bytes
-                        attributes: [
-                            {
-                                format: "float32x2",
-                                offset: 0,
-                                shaderLocation: 0,
-                            },
-                        ],
-                    },
-                ],
-            },
-            fragment: {
-                module: device.createShaderModule({
-                    code: `
-                        @group(0) @binding(0) var tex: texture_2d<f32>;
-                        @group(0) @binding(1) var texSampler: sampler;
-
-                        @fragment
-                        fn main(@builtin(position) pos: vec4<f32>) -> @location(0) vec4<f32> {
-                            return textureSample(tex, texSampler, pos.xy / vec2<f32>(${width}.0, ${height}.0));
-                        }
-                `,
-                }),
-                entryPoint: "main",
-                targets: [{ format }],
-            },
-            primitive: {
-                topology: "triangle-list",
-            },
-        });
+        const mandelbrotRenderPipeline = createRenderPipeline(device, format);
+        const juliaRenderPipeline = createRenderPipeline(device, format);
 
         console.log("Created render pipeline");
 
         // Create compute pipeline
-        const computePipeline = device.createComputePipeline({
-            layout: "auto",
-            compute: {
-                module: computeShaderModule,
-                entryPoint: "main",
-            },
-        });
+        const mandelbrotComputePipeline = createComputePipeline(
+            device,
+            computeShaderModule,
+        );
+        const juliaComputePipeline = createComputePipeline(
+            device,
+            juliaComputeShaderModule,
+        );
 
         console.log("Created compute pipeline");
 
         // Create texture for compute shader output
-        const texture = device.createTexture({
-            size: [width, height],
-            format: "rgba8unorm",
-            usage:
-                GPUTextureUsage.STORAGE_BINDING |
-                GPUTextureUsage.TEXTURE_BINDING |
-                GPUTextureUsage.COPY_DST,
-        });
+        const mandelbrotTexture = createTexture(device, width, height);
+        const juliaTexture = createTexture(device, width, height);
 
         // Create sampler for rendering
-        const sampler = device.createSampler({
+        const mandelbrotSampler = device.createSampler({
+            magFilter: "linear",
+            minFilter: "linear",
+        });
+        const juliaSampler = device.createSampler({
             magFilter: "linear",
             minFilter: "linear",
         });
 
         // Create uniform buffer for parameters
-        const uniformBuffer = device.createBuffer({
+        const mandelbrotUniformBuffer = device.createBuffer({
             size: 28, // 7 * 4 bytes
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
-
-        // Update parameters with better initial values
-        const params = new Float32Array([
-            width, // width
-            height, // height
-            100, // max_iterations
-            scale, // scale
-            offsetX, // offset_x
-            offsetY, // offset_y
-            exponent, // power
-        ]);
-        device.queue.writeBuffer(uniformBuffer, 0, params);
+        const juliaUniformBuffer = device.createBuffer({
+            size: 36, // 9 * 4 bytes
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
 
         // Create bind groups
-        const computeBindGroup = device.createBindGroup({
-            layout: computePipeline.getBindGroupLayout(0),
+        const mandelbrotComputeBindGroup = device.createBindGroup({
+            layout: mandelbrotComputePipeline.getBindGroupLayout(0),
             entries: [
                 {
                     binding: 0,
-                    resource: texture.createView(),
+                    resource: mandelbrotTexture.createView(),
                 },
                 {
                     binding: 1,
-                    resource: { buffer: uniformBuffer },
+                    resource: { buffer: mandelbrotUniformBuffer },
                 },
             ],
         });
 
-        const renderBindGroup = device.createBindGroup({
-            layout: renderPipeline.getBindGroupLayout(0),
+        const juliaComputeBindGroup = device.createBindGroup({
+            layout: juliaComputePipeline.getBindGroupLayout(0),
             entries: [
                 {
                     binding: 0,
-                    resource: texture.createView(),
+                    resource: juliaTexture.createView(),
                 },
                 {
                     binding: 1,
-                    resource: sampler,
+                    resource: { buffer: juliaUniformBuffer },
+                },
+            ],
+        });
+
+        const mandelbrotRenderBindGroup = device.createBindGroup({
+            layout: mandelbrotRenderPipeline.getBindGroupLayout(0),
+            entries: [
+                {
+                    binding: 0,
+                    resource: mandelbrotTexture.createView(),
+                },
+                {
+                    binding: 1,
+                    resource: mandelbrotSampler,
+                },
+            ],
+        });
+
+        const juliaRenderBindGroup = device.createBindGroup({
+            layout: juliaRenderPipeline.getBindGroupLayout(0),
+            entries: [
+                {
+                    binding: 0,
+                    resource: juliaTexture.createView(),
+                },
+                {
+                    binding: 1,
+                    resource: juliaSampler,
                 },
             ],
         });
 
         // Render function
         function render() {
+            const now = performance.now();
+            const mandelbrotIterations = Math.min(
+                Math.floor((now - lastMandelbrotUpdate) / 50 + 1 / scale + 64),
+                256,
+            );
+            const juliaIterations = Math.min(
+                Math.floor((now - lastJuliaUpdate) / 50 + 1 / scale + 32),
+                256,
+            );
+
             // Update uniform buffer with current parameters
-            const params = new Float32Array([
-                width,
-                height,
-                100,
-                scale,
-                offsetX,
-                offsetY,
-                exponent,
+            const mandelbrotParams = new Float32Array([
+                width, // width
+                height, // height
+                mandelbrotIterations, // max_iterations
+                scale, // scale
+                offsetX, // offset_x
+                offsetY, // offset_y
+                exponent, // exponent
             ]);
-            device.queue.writeBuffer(uniformBuffer, 0, params);
+            device.queue.writeBuffer(
+                mandelbrotUniformBuffer,
+                0,
+                mandelbrotParams,
+            );
+
+            // Update Julia uniform buffer
+            const juliaX = ((hoverMouseX - width / 2) * scale) / size + offsetX;
+            const juliaY =
+                ((hoverMouseY - height / 2) * scale) / size + offsetY;
+
+            const juliaParams = new Float32Array([
+                width, // width
+                height, // height
+                juliaIterations, // max_iterations
+                1, // scale
+                offsetX, // offset_x
+                offsetY, // offset_y
+                exponent, // exponent
+                juliaX, // julia_x
+                juliaY, // julia_y
+            ]);
+            device.queue.writeBuffer(juliaUniformBuffer, 0, juliaParams);
 
             // Create command encoder
             const commandEncoder = device.createCommandEncoder();
 
             // Compute pass
-            const computePass = commandEncoder.beginComputePass();
-            computePass.setPipeline(computePipeline);
-            computePass.setBindGroup(0, computeBindGroup);
-            computePass.dispatchWorkgroups(
+            const mandelbrotComputePass = commandEncoder.beginComputePass();
+            mandelbrotComputePass.setPipeline(mandelbrotComputePipeline);
+            mandelbrotComputePass.setBindGroup(0, mandelbrotComputeBindGroup);
+            mandelbrotComputePass.dispatchWorkgroups(
                 Math.ceil(width / WORKGROUP_SIZE),
                 Math.ceil(height / WORKGROUP_SIZE),
             );
-            computePass.end();
+            mandelbrotComputePass.end();
+
+            const juliaComputePass = commandEncoder.beginComputePass();
+            juliaComputePass.setPipeline(juliaComputePipeline);
+            juliaComputePass.setBindGroup(0, juliaComputeBindGroup);
+            juliaComputePass.dispatchWorkgroups(
+                Math.ceil(width / WORKGROUP_SIZE),
+                Math.ceil(height / WORKGROUP_SIZE),
+            );
+            juliaComputePass.end();
 
             // Render pass
-            const renderPass = commandEncoder.beginRenderPass({
+            const mandelbrotRenderPass = commandEncoder.beginRenderPass({
                 colorAttachments: [
                     {
-                        view: context.getCurrentTexture().createView(),
+                        view: mandelbrotContext
+                            .getCurrentTexture()
+                            .createView(),
                         clearValue: { r: 0, g: 0, b: 0, a: 1 },
                         loadOp: "clear",
                         storeOp: "store",
                     },
                 ],
             });
-            renderPass.setPipeline(renderPipeline);
-            renderPass.setBindGroup(0, renderBindGroup);
-            renderPass.setVertexBuffer(0, vertexBuffer);
-            renderPass.draw(6, 1, 0, 0);
-            renderPass.end();
+            mandelbrotRenderPass.setPipeline(mandelbrotRenderPipeline);
+            mandelbrotRenderPass.setBindGroup(0, mandelbrotRenderBindGroup);
+            mandelbrotRenderPass.setVertexBuffer(0, vertexBuffer);
+            mandelbrotRenderPass.draw(6, 1, 0, 0);
+            mandelbrotRenderPass.end();
+
+            const juliaRenderPass = commandEncoder.beginRenderPass({
+                colorAttachments: [
+                    {
+                        view: juliaContext.getCurrentTexture().createView(),
+                        clearValue: { r: 0, g: 0, b: 0, a: 1 },
+                        loadOp: "clear",
+                        storeOp: "store",
+                    },
+                ],
+            });
+            juliaRenderPass.setPipeline(juliaRenderPipeline);
+            juliaRenderPass.setBindGroup(0, juliaRenderBindGroup);
+            juliaRenderPass.setVertexBuffer(0, vertexBuffer);
+            juliaRenderPass.draw(6, 1, 0, 0);
+            juliaRenderPass.end();
 
             // Submit commands
             device.queue.submit([commandEncoder.finish()]);
@@ -425,57 +564,56 @@
         }
 
         // Event listeners for controls
-        canvas.addEventListener("wheel", (e) => {
+        mandelbrotCanvas.addEventListener("wheel", (e) => {
             e.preventDefault();
             const zoomFactor = Math.exp(e.deltaY / 1000);
 
-            // Get mouse position in canvas space
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            // Convert mouse position to complex plane coordinates
-            const mouseComplexX =
-                (mouseX - width / 2) * (scale / height) + offsetX;
-            const mouseComplexY =
-                (mouseY - height / 2) * (scale / height) + offsetY;
+            const mousePos = pixelPosToComplex(hoverMouseX, hoverMouseY);
 
             // Adjust scale
             scale *= zoomFactor;
 
             // Adjust offset to keep mouse position fixed
-            offsetX = mouseComplexX - (mouseX - width / 2) * (scale / height);
-            offsetY = mouseComplexY - (mouseY - height / 2) * (scale / height);
+            offsetX = mousePos.x - (hoverMouseX - width / 2) * (scale / size);
+            offsetY = mousePos.y - (hoverMouseY - height / 2) * (scale / size);
         });
 
-        canvas.addEventListener("mousedown", (e) => {
+        mandelbrotCanvas.addEventListener("mousedown", (e) => {
             isDragging = true;
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
-            canvas.style.cursor = "grabbing";
+            mandelbrotCanvas.style.cursor = "grabbing";
         });
 
-        canvas.addEventListener("mousemove", (e) => {
+        mandelbrotCanvas.addEventListener("mousemove", (e) => {
+            const mandelbrotRect = mandelbrotCanvas.getBoundingClientRect();
+            const mouseX = e.clientX - mandelbrotRect.left;
+            const mouseY = e.clientY - mandelbrotRect.top;
+            const mousePos = pixelPosToComplex(mouseX, mouseY);
             if (isDragging) {
                 const dx = e.clientX - lastMouseX;
                 const dy = e.clientY - lastMouseY;
 
-                offsetX -= dx * (scale / height);
-                offsetY -= dy * (scale / height);
+                offsetX -= dx * (scale / size);
+                offsetY -= dy * (scale / size);
 
                 lastMouseX = e.clientX;
                 lastMouseY = e.clientY;
+                lastMandelbrotUpdate = performance.now();
             }
+            hoverMouseX = mouseX;
+            hoverMouseY = mouseY;
+            lastJuliaUpdate = performance.now();
         });
 
-        canvas.addEventListener("mouseup", () => {
+        mandelbrotCanvas.addEventListener("mouseup", () => {
             isDragging = false;
-            canvas.style.cursor = "grab";
+            mandelbrotCanvas.style.cursor = "grab";
         });
 
-        canvas.addEventListener("mouseleave", () => {
+        mandelbrotCanvas.addEventListener("mouseleave", () => {
             isDragging = false;
-            canvas.style.cursor = "grab";
+            mandelbrotCanvas.style.cursor = "grab";
         });
 
         // Keyboard controls
@@ -502,7 +640,7 @@
         });
 
         // Set initial cursor style
-        canvas.style.cursor = "grab";
+        mandelbrotCanvas.style.cursor = "grab";
 
         // Start rendering
         render();
@@ -518,9 +656,46 @@
 <div class="flex flex-col gap-2 items-center">
     <div class="max-w-xl">
         <h1 class="emphasize">WebGPU Mandelbrot</h1>
+    </div>
+
+    {#if !webgpuSupported}
+        <div class="error-message max-w-xl">
+            <p>{webgpuError}</p>
+            <p>
+                Please use a browser that supports WebGPU, such as Chrome Canary
+                with the appropriate flags enabled. Either navigate to
+                <code>chrome://flags</code> and enable "Unsafe WebGPU" or use the
+                command line flag:
+            </p>
+            <Code source={"google-chrome --enable-unsafe-webgpu"} lang={"sh"} />
+        </div>
+    {:else}
+        <div class="flex gap-2 flex-wrap">
+            <canvas id="mandelbrot-canvas"></canvas>
+            <canvas id="julia-canvas"></canvas>
+        </div>
+        <div class="controls">
+            <label>
+                Exponent:
+                <input
+                    type="range"
+                    min="1"
+                    max="14"
+                    step="0.1"
+                    bind:value={exponent}
+                />
+                <span class="value">{exponent.toFixed(1)}</span>
+            </label>
+        </div>
+    {/if}
+    <div class="max-w-xl">
         <p>
-            Hover over the canvas to zoom in, click and drag to pan, and use the
-            arrow keys to navigate.
+            On the left is the Mandelbrot set. Scroll to zoom in, click and drag
+            to pan, and use the arrow keys to navigate.
+        </p>
+        <p>
+            When you hover over the Mandelbrot set, you'll see the Julia set
+            update to the corresponding point.
         </p>
         <p>This demo requires a browser that supports WebGPU.</p>
         <p>
@@ -539,35 +714,6 @@
             </a>.
         </p>
     </div>
-
-    {#if !webgpuSupported}
-        <div class="error-message max-w-xl">
-            <p>{webgpuError}</p>
-            <p>
-                Please use a browser that supports WebGPU, such as Chrome Canary
-                with the appropriate flags enabled. Either navigate to
-                <code>chrome://flags</code> and enable "Unsafe WebGPU" or use the
-                command line flag:
-            </p>
-            <Code source={"google-chrome --enable-unsafe-webgpu"} lang={"sh"} />
-        </div>
-    {:else}
-        <div class="controls">
-            <label>
-                Exponent:
-                <input
-                    type="range"
-                    min="1"
-                    max="14"
-                    step="0.1"
-                    bind:value={exponent}
-                    on:input={render}
-                />
-                <span class="value">{exponent.toFixed(1)}</span>
-            </label>
-        </div>
-        <canvas id="mandelbrot-canvas"></canvas>
-    {/if}
 </div>
 
 <style>
