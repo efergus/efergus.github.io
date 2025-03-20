@@ -15,6 +15,163 @@
     let webgpuSupported = true;
     let webgpuError = "";
 
+    const complexPowWgsl = `
+        fn complex_pow(z_re: f32, z_im: f32, n: f32) -> vec2<f32> {
+            // Handle integer powers more efficiently
+            if (n == 2.0) {
+                return vec2<f32>(
+                    z_re * z_re - z_im * z_im,
+                    2.0 * z_re * z_im
+                );
+            }
+            
+            // For non-integer powers, use polar form
+            let r = sqrt(z_re * z_re + z_im * z_im);
+            if (r == 0.0) {
+                return vec2<f32>(0.0, 0.0);
+            }
+            let theta = atan2(z_im, z_re);
+            let r_n = pow(r, n);
+            let theta_n = n * theta;
+            return vec2<f32>(
+                r_n * cos(theta_n),
+                r_n * sin(theta_n)
+            );
+        }
+    `;
+
+    const mandelbrotWgsl = `
+        @group(0) @binding(0) var output: texture_storage_2d<rgba8unorm, write>;
+
+        struct Params {
+            width: f32,
+            height: f32,
+            max_iterations: f32,
+            scale: f32,
+            offset_x: f32,
+            offset_y: f32,
+            power: f32,
+        }
+        @group(0) @binding(1) var<uniform> params: Params;
+
+        ${complexPowWgsl}
+
+        @compute @workgroup_size(${WORKGROUP_SIZE}, ${WORKGROUP_SIZE})
+        fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+            let x = global_id.x;
+            let y = global_id.y;
+            let width = params.width;
+            let height = params.height;
+            let max_iterations = u32(params.max_iterations);
+            
+            if (x >= u32(width) || y >= u32(height)) {
+                return;
+            }
+
+            let scale = params.scale;
+            let offset_x = params.offset_x;
+            let offset_y = params.offset_y;
+            let size = max(width, height);
+
+            // Map pixel coordinates to complex plane
+            let c_re = (f32(x) - width / 2.0) * scale / size + offset_x;
+            let c_im = (f32(y) - height / 2.0) * scale / size + offset_y;
+
+            var z_re = 0.0;
+            var z_im = 0.0;
+            var i: u32 = 0u;
+
+            // Iterate until escape or max iterations reached
+            for (; i < max_iterations; i++) {
+                let new_z = complex_pow(z_re, z_im, params.power);
+                z_re = new_z.x + c_re;
+                z_im = new_z.y + c_im;
+
+                if (z_re * z_re + z_im * z_im > 4.0) {
+                    break;
+                }
+            }
+
+            // Color based on iteration count
+            let t = f32(i) / f32(max_iterations);
+            let color = vec4<f32>(
+                0.5 + 0.5 * cos(3.0 + t * 3.0),
+                0.5 + 0.5 * cos(3.0 + t * 4.0),
+                0.5 + 0.5 * cos(3.0 + t * 5.0),
+                1.0
+            );
+
+            textureStore(output, vec2<u32>(x, y), color);
+        }
+    `;
+
+    const juliaWgsl = `
+        @group(0) @binding(0) var output: texture_storage_2d<rgba8unorm, write>;
+
+        struct Params {
+            width: f32,
+            height: f32,
+            max_iterations: f32,
+            scale: f32,
+            offset_x: f32,
+            offset_y: f32,
+            power: f32,
+            c_re: f32,
+            c_im: f32,
+        }
+        @group(0) @binding(1) var<uniform> params: Params;
+
+        ${complexPowWgsl}
+
+        @compute @workgroup_size(${WORKGROUP_SIZE}, ${WORKGROUP_SIZE})
+        fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
+            let x = global_id.x;
+            let y = global_id.y;
+            let width = params.width;
+            let height = params.height;
+            let max_iterations = u32(params.max_iterations);
+            
+            if (x >= u32(width) || y >= u32(height)) {
+                return;
+            }
+
+            let scale = params.scale;
+            let offset_x = params.offset_x;
+            let offset_y = params.offset_y;
+            let size = max(width, height);
+
+            // Map pixel coordinates to complex plane
+            let c_re = params.c_re;
+            let c_im = params.c_im;
+
+            var z_re = (f32(x) - width / 2.0) * scale / size + offset_x;
+            var z_im = (f32(y) - height / 2.0) * scale / size + offset_y;
+            var i: u32 = 0u;
+
+            // Iterate until escape or max iterations reached
+            for (; i < max_iterations; i++) {
+                let new_z = complex_pow(z_re, z_im, params.power);
+                z_re = new_z.x + c_re;
+                z_im = new_z.y + c_im;
+
+                if (z_re * z_re + z_im * z_im > 4.0) {
+                    break;
+                }
+            }
+
+            // Color based on iteration count
+            let t = f32(i) / f32(max_iterations);
+            let color = vec4<f32>(
+                0.5 + 0.5 * cos(3.0 + t * 3.0),
+                0.5 + 0.5 * cos(3.0 + t * 4.0),
+                0.5 + 0.5 * cos(3.0 + t * 5.0),
+                1.0
+            );
+
+            textureStore(output, vec2<u32>(x, y), color);
+        }
+    `;
+
     async function init() {
         if (!navigator.gpu) {
             webgpuSupported = false;
@@ -31,6 +188,7 @@
             webgpuError = "The WebGPU adapter is not available on your system";
             return;
         }
+
         const device = await adapter.requestDevice();
 
         // Setup canvas
@@ -58,91 +216,7 @@
         // Create compute shader
         const computeShaderModule = device.createShaderModule({
             label: "Mandelbrot compute shader",
-            code: `
-                @group(0) @binding(0) var output: texture_storage_2d<rgba8unorm, write>;
-
-                struct Params {
-                    width: f32,
-                    height: f32,
-                    max_iterations: f32,
-                    scale: f32,
-                    offset_x: f32,
-                    offset_y: f32,
-                    power: f32,
-                }
-                @group(0) @binding(1) var<uniform> params: Params;
-
-                fn complex_pow(z_re: f32, z_im: f32, n: f32) -> vec2<f32> {
-                    // Handle integer powers more efficiently
-                    if (n == 2.0) {
-                        return vec2<f32>(
-                            z_re * z_re - z_im * z_im,
-                            2.0 * z_re * z_im
-                        );
-                    }
-                    
-                    // For non-integer powers, use polar form
-                    let r = sqrt(z_re * z_re + z_im * z_im);
-                    if (r == 0.0) {
-                        return vec2<f32>(0.0, 0.0);
-                    }
-                    let theta = atan2(z_im, z_re);
-                    let r_n = pow(r, n);
-                    let theta_n = n * theta;
-                    return vec2<f32>(
-                        r_n * cos(theta_n),
-                        r_n * sin(theta_n)
-                    );
-                }
-
-                @compute @workgroup_size(${WORKGROUP_SIZE}, ${WORKGROUP_SIZE})
-                fn main(@builtin(global_invocation_id) global_id: vec3<u32>) {
-                    let x = global_id.x;
-                    let y = global_id.y;
-                    let width = params.width;
-                    let height = params.height;
-                    let max_iterations = u32(params.max_iterations);
-                    
-                    if (x >= u32(width) || y >= u32(height)) {
-                        return;
-                    }
-
-                    let scale = params.scale;
-                    let offset_x = params.offset_x;
-                    let offset_y = params.offset_y;
-                    let size = max(width, height);
-
-                    // Map pixel coordinates to complex plane
-                    let c_re = (f32(x) - width / 2.0) * scale / size + offset_x;
-                    let c_im = (f32(y) - height / 2.0) * scale / size + offset_y;
-
-                    var z_re = 0.0;
-                    var z_im = 0.0;
-                    var i: u32 = 0u;
-
-                    // Iterate until escape or max iterations reached
-                    for (; i < max_iterations; i++) {
-                        let new_z = complex_pow(z_re, z_im, params.power);
-                        z_re = new_z.x + c_re;
-                        z_im = new_z.y + c_im;
-
-                        if (z_re * z_re + z_im * z_im > 4.0) {
-                            break;
-                        }
-                    }
-
-                    // Color based on iteration count
-                    let t = f32(i) / f32(max_iterations);
-                    let color = vec4<f32>(
-                        0.5 + 0.5 * cos(3.0 + t * 3.0),
-                        0.5 + 0.5 * cos(3.0 + t * 4.0),
-                        0.5 + 0.5 * cos(3.0 + t * 5.0),
-                        1.0
-                    );
-
-                    textureStore(output, vec2<u32>(x, y), color);
-                }
-        `,
+            code: mandelbrotWgsl,
         });
 
         console.log("Created compute shader");
@@ -459,8 +533,10 @@
         <p>
             To view the code, head to <a
                 href="https://github.com/efergus/efergus.github.io/tree/main/src/routes/projects/webgpu-mandelbrot"
-                >the repository</a
-            >.
+                target="_blank"
+            >
+                the repository
+            </a>.
         </p>
     </div>
 
@@ -490,7 +566,7 @@
                 <span class="value">{exponent.toFixed(1)}</span>
             </label>
         </div>
-        <canvas id="webgpu-canvas"></canvas>
+        <canvas id="mandelbrot-canvas"></canvas>
     {/if}
 </div>
 
