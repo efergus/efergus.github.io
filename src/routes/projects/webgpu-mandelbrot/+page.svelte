@@ -1,6 +1,7 @@
 <script>
     import Code from "$lib/components/Code.svelte";
-    import { onMount } from "svelte";
+    import Eq from "$lib/components/Eq.svelte";
+    import { onMount, onDestroy } from "svelte";
     const WORKGROUP_SIZE = 8;
 
     // Canvas dimensions
@@ -267,6 +268,7 @@
         };
     };
 
+    let animationFrameId;
     async function init() {
         if (!navigator.gpu) {
             webgpuSupported = false;
@@ -464,6 +466,10 @@
                 Math.floor((now - lastJuliaUpdate) / 50 + 1 / scale + 32),
                 256,
             );
+            if (mandelbrotIterations >= 256 && juliaIterations >= 256) {
+                animationFrameId = requestAnimationFrame(render);
+                return;
+            }
 
             // Update uniform buffer with current parameters
             const mandelbrotParams = new Float32Array([
@@ -521,13 +527,19 @@
             );
             juliaComputePass.end();
 
+            // Get current texture views
+            const mandelbrotTextureView = mandelbrotContext
+                .getCurrentTexture()
+                .createView();
+            const juliaTextureView = juliaContext
+                .getCurrentTexture()
+                .createView();
+
             // Render pass
             const mandelbrotRenderPass = commandEncoder.beginRenderPass({
                 colorAttachments: [
                     {
-                        view: mandelbrotContext
-                            .getCurrentTexture()
-                            .createView(),
+                        view: mandelbrotTextureView,
                         clearValue: { r: 0, g: 0, b: 0, a: 1 },
                         loadOp: "clear",
                         storeOp: "store",
@@ -543,7 +555,7 @@
             const juliaRenderPass = commandEncoder.beginRenderPass({
                 colorAttachments: [
                     {
-                        view: juliaContext.getCurrentTexture().createView(),
+                        view: juliaTextureView,
                         clearValue: { r: 0, g: 0, b: 0, a: 1 },
                         loadOp: "clear",
                         storeOp: "store",
@@ -556,11 +568,12 @@
             juliaRenderPass.draw(6, 1, 0, 0);
             juliaRenderPass.end();
 
-            // Submit commands
-            device.queue.submit([commandEncoder.finish()]);
+            // Submit commands and destroy encoder
+            const commandBuffer = commandEncoder.finish();
+            device.queue.submit([commandBuffer]);
 
             // Request next frame
-            requestAnimationFrame(render);
+            animationFrameId = requestAnimationFrame(render);
         }
 
         // Event listeners for controls
@@ -579,6 +592,11 @@
         });
 
         mandelbrotCanvas.addEventListener("mousedown", (e) => {
+            const mandelbrotRect = mandelbrotCanvas.getBoundingClientRect();
+            const mouseX = e.clientX - mandelbrotRect.left;
+            const mouseY = e.clientY - mandelbrotRect.top;
+            clickedMouseX = mouseX;
+            clickedMouseY = mouseY;
             isDragging = true;
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
@@ -613,6 +631,8 @@
 
         mandelbrotCanvas.addEventListener("mouseleave", () => {
             isDragging = false;
+            hoverMouseX = clickedMouseX;
+            hoverMouseY = clickedMouseY;
             mandelbrotCanvas.style.cursor = "grab";
         });
 
@@ -645,6 +665,12 @@
         // Start rendering
         render();
     }
+
+    onDestroy(() => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
 
     init().catch(console.error);
 </script>
@@ -693,11 +719,42 @@
             On the left is the Mandelbrot set. Scroll to zoom in, click and drag
             to pan, and use the arrow keys to navigate.
         </p>
+        <p>The relationship that creates all this complexity is</p>
+        <div class="text-lg">
+            <Eq
+                tex={`
+            \\begin{align*}
+                f_c(z) &= z^d + c \\\\
+                c &= \\text{x} + \\text{y}i \\\\
+                \\text{w}&\\text{here} \\\\
+                f_c(0),\\; f_c(f_c(0)), &\\dots \\; \\text{is bounded}
+            \\end{align*}
+            `}
+                block
+            />
+        </div>
         <p>
-            When you hover over the Mandelbrot set, you'll see the Julia set
-            update to the corresponding point.
+            where <Eq tex={"c"} /> is a complex number and
+            <Eq tex={"d"} /> is the exponent. Each point in the image is a different
+            value of <Eq tex={"c"} />.
         </p>
-        <p>This demo requires a browser that supports WebGPU.</p>
+        <p>
+            On the right is the Julia set, a sister set of the Mandelbrot set.
+            It is defined by the same relationship, but <Eq tex={"c"} /> is fixed
+            and each point shows the evolution of <Eq
+                tex={"z = \\text{x} + \\text{y}i"}
+            />. When you move the mouse, the Julia set updates to show the
+            corresponding point. Also, technically the Julia set is the edge of
+            the set shown - the set of points where arbitrarily small
+            perturbations cause drastic changes in behavior.
+        </p>
+        <p>
+            If you move your mouse around near the edge of the Mandelbrot set,
+            you'll notice something interesting. The points where <Eq
+                tex={"c"}
+            /> is inside the Mandelbrot set are exactly the points where the Julia
+            set is connected!
+        </p>
         <p>
             Zoom in enough, and you'll see the image starts to get pixelated.
             This is actually due to the limited precision of 32-bit floating
