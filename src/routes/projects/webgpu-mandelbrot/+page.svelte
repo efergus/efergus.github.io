@@ -23,6 +23,8 @@
     let clickedMouseY = 0;
     let lastMandelbrotUpdate = 0;
     let lastJuliaUpdate = 0;
+    let frameCount = 0;
+    let frameLogTime = 0;
 
     let webgpuSupported = true;
     let webgpuError = "";
@@ -457,6 +459,7 @@
 
         // Render function
         function render() {
+            frameCount++;
             const now = performance.now();
             const mandelbrotIterations = Math.min(
                 Math.floor((now - lastMandelbrotUpdate) / 50 + 1 / scale + 64),
@@ -466,7 +469,11 @@
                 Math.floor((now - lastJuliaUpdate) / 50 + 1 / scale + 32),
                 256,
             );
-            if (mandelbrotIterations >= 256 && juliaIterations >= 256) {
+            // Skip frames to avoid too many updates
+            if (
+                frameCount % 2 ||
+                (mandelbrotIterations >= 256 && juliaIterations >= 256)
+            ) {
                 animationFrameId = requestAnimationFrame(render);
                 return;
             }
