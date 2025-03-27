@@ -23,6 +23,8 @@
     let clickedMouseY = 0;
     let lastMandelbrotUpdate = 0;
     let lastJuliaUpdate = 0;
+    let frameCount = 0;
+    let frameLogTime = 0;
 
     let webgpuSupported = true;
     let webgpuError = "";
@@ -112,6 +114,12 @@
                 0.5 + 0.5 * cos(3.0 + t * 5.0),
                 1.0
             );
+
+            // let angle = atan2(z_im, z_re);
+            // let magnitude = sqrt(z_re * z_re + z_im * z_im);
+            // let color = vec4<f32>(clamp(0.4 * magnitude, 0.0, 1.0), (cos(angle) + 1.0) / 2.0, (sin(angle) + 1.0) / 2.0, 1.0);
+            // let mag = log2(1.0 + 0.4 * sqrt(z_re * z_re + z_im * z_im));
+            // let color = vec4<f32>(mag, mag, mag, 1.0);
 
             textureStore(output, vec2<u32>(x, y), color);
         }
@@ -457,16 +465,29 @@
 
         // Render function
         function render() {
+            frameCount++;
             const now = performance.now();
             const mandelbrotIterations = Math.min(
-                Math.floor((now - lastMandelbrotUpdate) / 50 + 1 / scale + 64),
+                Math.floor(
+                    (now - lastMandelbrotUpdate) / 50 +
+                        Math.min(1 / scale, 160) +
+                        64,
+                ),
                 256,
             );
             const juliaIterations = Math.min(
-                Math.floor((now - lastJuliaUpdate) / 50 + 1 / scale + 32),
+                Math.floor(
+                    (now - lastJuliaUpdate) / 50 +
+                        Math.min(1 / scale, 180) +
+                        32,
+                ),
                 256,
             );
-            if (mandelbrotIterations >= 256 && juliaIterations >= 256) {
+            // Skip frames to avoid too many updates
+            if (
+                frameCount % 2 ||
+                (mandelbrotIterations >= 256 && juliaIterations >= 256)
+            ) {
                 animationFrameId = requestAnimationFrame(render);
                 return;
             }
@@ -496,7 +517,7 @@
                 width, // width
                 height, // height
                 juliaIterations, // max_iterations
-                1, // scale
+                3.4, // scale
                 offsetX, // offset_x
                 offsetY, // offset_y
                 exponent, // exponent
@@ -589,6 +610,8 @@
             // Adjust offset to keep mouse position fixed
             offsetX = mousePos.x - (hoverMouseX - width / 2) * (scale / size);
             offsetY = mousePos.y - (hoverMouseY - height / 2) * (scale / size);
+            lastMandelbrotUpdate = performance.now();
+            lastJuliaUpdate = performance.now();
         });
 
         mandelbrotCanvas.addEventListener("mousedown", (e) => {
@@ -601,6 +624,8 @@
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
             mandelbrotCanvas.style.cursor = "grabbing";
+            lastMandelbrotUpdate = performance.now();
+            lastJuliaUpdate = performance.now();
         });
 
         mandelbrotCanvas.addEventListener("mousemove", (e) => {
@@ -634,6 +659,7 @@
             hoverMouseX = clickedMouseX;
             hoverMouseY = clickedMouseY;
             mandelbrotCanvas.style.cursor = "grab";
+            lastJuliaUpdate = performance.now();
         });
 
         // Keyboard controls
