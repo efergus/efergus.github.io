@@ -406,12 +406,11 @@
         let powerVis = Math.max(0, powerDeltaState / gainState);
         powerVis = Math.log(8 * powerVis ** 2 + 1) / Math.log(8 + 1);
 
-        totalTime += deltaT * Math.min(Math.sqrt(powerVis) * 50, 2);
-
-        console.log(powerDeltaState, gainState);
+        totalTime += deltaT * Math.min(Math.sqrt(powerVis) * 200, 2);
 
         // Map to radius range (0.257 down)
-        audioRadius = 0.26 - powerVis * 0.01;
+        audioRadius = 0.265 - powerVis * 0.007;
+        scale = 1.5 - powerVis * 0.06;
         juliaAngle =
             Math.sin((2 * Math.PI * totalTime) / 240) * Math.PI * 0.84 +
             Math.PI;
@@ -679,34 +678,6 @@
             // Request next frame
             animationFrameId = requestAnimationFrame(render);
         }
-
-        // Event listeners for controls
-        juliaCanvas.addEventListener("wheel", (e) => {
-            e.preventDefault();
-            const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
-            scale *= zoomFactor;
-        });
-
-        juliaCanvas.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-        });
-
-        window.addEventListener("mousemove", (e) => {
-            if (isDragging) {
-                const dx = e.clientX - lastMouseX;
-                const dy = e.clientY - lastMouseY;
-                offsetX -= (dx * scale) / size;
-                offsetY -= (dy * scale) / size;
-                lastMouseX = e.clientX;
-                lastMouseY = e.clientY;
-            }
-        });
-
-        window.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
 
         render();
     }
