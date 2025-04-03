@@ -390,7 +390,10 @@
             powerDeltaState * decay + Math.max(powerDelta, 0),
             0,
         );
-        const gainDecay = Math.pow(0.5, deltaT / 30);
+        const gainDecay =
+            audioFrame < sampleRate / 4
+                ? Math.pow(0.5, deltaT * 4)
+                : Math.pow(0.5, deltaT / 30);
         noiseState *= gainDecay;
         gainState = Math.max(
             decay * gainState + (1 - decay) * Math.max(powerDeltaState, 0),
@@ -404,6 +407,8 @@
         powerVis = Math.log(8 * powerVis ** 2 + 1) / Math.log(8 + 1);
 
         totalTime += deltaT * Math.min(Math.sqrt(powerVis) * 50, 2);
+
+        console.log(powerDeltaState, gainState);
 
         // Map to radius range (0.257 down)
         audioRadius = 0.26 - powerVis * 0.01;
