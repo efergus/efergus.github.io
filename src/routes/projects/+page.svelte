@@ -1,6 +1,7 @@
 <script>
   import Project from "$lib/components/Card.svelte";
   import molecule from "$lib/assets/particlegrid/mol-representations.png";
+  import spy from "$lib/assets/webgpu/gpu-spy-trace.png";
   import mandelbrot from "$lib/assets/mandelbrot/mandelbrot.png";
   import fluid from "$lib/assets/fluid/fluid.png";
 </script>
@@ -30,7 +31,7 @@
       advantage of the low-level nature of the WebGPU API. It uses a cache
       occupancy channel to determine which website the victim is using.
     </p>
-    <p></p>
+    <img src={spy} alt="WebGPU-Spy Trace" />
   </Project>
   <Project
     title="ParticleGrid"
