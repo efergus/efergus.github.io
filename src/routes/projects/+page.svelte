@@ -2,6 +2,7 @@
   import Project from "$lib/components/Card.svelte";
   import molecule from "$lib/assets/particlegrid/mol-representations.png";
   import mandelbrot from "$lib/assets/mandelbrot/mandelbrot.png";
+  import fluid from "$lib/assets/fluid/fluid.png";
 </script>
 
 <h1 class="emphasize">Projects and Writeups</h1>
@@ -62,6 +63,17 @@
     <img src={molecule} alt="The principle of ParticleGrid" />
   </Project>
   <Project
+    title="Fluid Simulation"
+    subtitle="An Eulerian Fluid Simulation"
+    link="https://eferg.us/Fluid"
+  >
+    <p>
+      An interactible Eulerian fluid simulation. For more info, take a look at
+      the <a href="https://github.com/efergus/Fluid">GitHub repo</a>.
+    </p>
+    <img src={fluid} alt="Fluid Simulation" />
+  </Project>
+  <Project
     title="Fermidle"
     subtitle="they call them dle's but they're anything but"
     link="https://eferg.us/fermidle"
@@ -74,6 +86,18 @@
       </p>
       <p>Try to guess the order of magnitude of absurd physics problems!</p>
     </div>
+  </Project>
+  <Project
+    title="Basic Backprop"
+    subtitle="Numpy-based machine learning"
+    link="https://github.com/efergus/basic-backprop"
+  >
+    <p>
+      I wanted to understand how backpropagation works, so I built a
+      backpropagation algorithm in python using numpy. It's not exactly
+      high-speed, but it gets reasonable results for a basic feed-forward
+      network on the MNIST dataset.
+    </p>
   </Project>
   <Project
     title="No-JS dark mode toggle"
@@ -112,18 +136,6 @@
     </p>
   </Project>
   <Project
-    title="Basic Backprop"
-    subtitle="Numpy-based machine learning"
-    link="https://github.com/efergus/basic-backprop"
-  >
-    <p>
-      I wanted to understand how backpropagation works, so I built a
-      backpropagation algorithm in python using numpy. It's not exactly
-      high-speed, but it gets reasonable results for a basic feed-forward
-      network on the MNIST dataset.
-    </p>
-  </Project>
-  <Project
     title="Burnt Umber"
     subtitle="3D Color picker"
     link="https://github.com/efergus/burnt-umber"
@@ -135,7 +147,7 @@
       what's going on with different color spaces, so that's what this is. 3D
       representations of color spaces that function as color pickers, hopefully
       even useful ones! It's still a WIP, but here's a link to the <a
-        href="https://github.com/efergus/burnt-umber">GitHub page</a
+        href="https://github.com/efergus/burnt-umber">GitHub repo</a
       >
     </p>
   </Project>
