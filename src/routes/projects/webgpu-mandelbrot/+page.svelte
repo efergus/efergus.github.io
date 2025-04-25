@@ -15,6 +15,7 @@
     let offsetY = 0.0;
     let exponent = 2.0;
     let isDragging = false;
+    let isHovering = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
     let hoverMouseX = 0;
@@ -25,9 +26,86 @@
     let lastJuliaUpdate = 0;
     let frameCount = 0;
     let frameLogTime = 0;
+    let juliaX = 0;
+    let juliaY = 0;
 
     let webgpuSupported = true;
     let webgpuError = "";
+
+    let overlayCanvas;
+
+    const complexPow = ({ re, im }, n) => {
+        if (n === 2) {
+            return {
+                re: re * re - im * im,
+                im: 2.0 * re * im,
+            };
+        }
+
+        const r = Math.sqrt(z_re * z_re + z_im * z_im);
+        if (r === 0) {
+            return { re: 0, im: 0 };
+        }
+        const theta = Math.atan2(z_im, z_re);
+        const r_n = Math.pow(r, n);
+        const theta_n = n * theta;
+        return {
+            re: r_n * Math.cos(theta_n),
+            im: r_n * Math.sin(theta_n),
+        };
+    };
+
+    const evaluateMandelbrotIteration = (z, exponent, c) => {
+        const { re, im } = complexPow(z, exponent);
+        return {
+            re: re + c.re,
+            im: im + c.im,
+        };
+    };
+
+    const drawIterations = (juliaX, juliaY, mandelbrotIterations = 64) => {
+        const mandelbrotOverlayContext = overlayCanvas?.getContext("2d");
+        if (!mandelbrotOverlayContext || !isHovering) {
+            return;
+        }
+
+        const path = [];
+        const c = { re: juliaX, im: juliaY };
+        let pos = c;
+        for (let idx = 0; idx < mandelbrotIterations; idx++) {
+            const pixelPos = complexToPixelPos(pos.re, pos.im);
+            path.push(pixelPos);
+            pos = evaluateMandelbrotIteration(pos, exponent, c);
+            if (pos.re * pos.re + pos.im * pos.im > 16) {
+                break;
+            }
+        }
+
+        mandelbrotOverlayContext.clearRect(0, 0, width, height);
+        // console.log(path);
+        mandelbrotOverlayContext.strokeStyle = "#201080";
+        mandelbrotOverlayContext.lineWidth = 2;
+        mandelbrotOverlayContext.fillStyle = "#b0c880";
+
+        mandelbrotOverlayContext.beginPath();
+        const start = path[0];
+        mandelbrotOverlayContext.moveTo(start.x, start.y);
+        for (let idx = 1; idx < path.length; idx++) {
+            const pos = path[idx];
+            mandelbrotOverlayContext.lineTo(pos.x, pos.y);
+        }
+        mandelbrotOverlayContext.stroke();
+        mandelbrotOverlayContext.closePath();
+
+        for (let idx = path.length - 1; idx >= 0; idx--) {
+            mandelbrotOverlayContext.beginPath();
+            const pos = path[idx];
+            mandelbrotOverlayContext.arc(pos.x, pos.y, 4, 0, 2 * Math.PI);
+            mandelbrotOverlayContext.stroke();
+            mandelbrotOverlayContext.fill();
+            mandelbrotOverlayContext.closePath();
+        }
+    };
 
     const complexPowWgsl = `
         fn complex_pow(z_re: f32, z_im: f32, n: f32) -> vec2<f32> {
@@ -276,6 +354,18 @@
         };
     };
 
+    const complexToPixelPos = (x, y) => {
+        return {
+            x: (x - offsetX) * (size / scale) + width / 2,
+            y: (y - offsetY) * (size / scale) + height / 2,
+        };
+    };
+
+    $: {
+        juliaX = ((hoverMouseX - width / 2) * scale) / size + offsetX;
+        juliaY = ((hoverMouseY - height / 2) * scale) / size + offsetY;
+    }
+
     let animationFrameId;
     async function init() {
         if (!navigator.gpu) {
@@ -303,6 +393,9 @@
         const juliaCanvas = document.getElementById("julia-canvas");
         const juliaContext = juliaCanvas.getContext("webgpu");
 
+        const mandelbrotOverlay = document.getElementById("mandelbrot-overlay");
+        const mandelbrotOverlayContext = mandelbrotOverlay.getContext("2d");
+
         console.log("Initialized WebGPU");
 
         // Set canvas size
@@ -310,6 +403,8 @@
         mandelbrotCanvas.height = height;
         juliaCanvas.width = width;
         juliaCanvas.height = height;
+        mandelbrotOverlay.width = width;
+        mandelbrotOverlay.height = height;
 
         // Configure canvas format
         const format = navigator.gpu.getPreferredCanvasFormat();
@@ -509,10 +604,6 @@
             );
 
             // Update Julia uniform buffer
-            const juliaX = ((hoverMouseX - width / 2) * scale) / size + offsetX;
-            const juliaY =
-                ((hoverMouseY - height / 2) * scale) / size + offsetY;
-
             const juliaParams = new Float32Array([
                 width, // width
                 height, // height
@@ -595,6 +686,8 @@
 
             // Request next frame
             animationFrameId = requestAnimationFrame(render);
+
+            drawIterations(juliaX, juliaY);
         }
 
         // Event listeners for controls
@@ -647,6 +740,7 @@
             hoverMouseX = mouseX;
             hoverMouseY = mouseY;
             lastJuliaUpdate = performance.now();
+            isHovering = true;
         });
 
         mandelbrotCanvas.addEventListener("mouseup", () => {
@@ -660,6 +754,7 @@
             hoverMouseY = clickedMouseY;
             mandelbrotCanvas.style.cursor = "grab";
             lastJuliaUpdate = performance.now();
+            isHovering = false;
         });
 
         // Keyboard controls
@@ -691,7 +786,6 @@
         // Start rendering
         render();
     }
-
     onDestroy(() => {
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
@@ -722,9 +816,22 @@
             <Code source={"google-chrome --enable-unsafe-webgpu"} lang={"sh"} />
         </div>
     {:else}
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-2 flex-wrap relative">
             <canvas id="mandelbrot-canvas"></canvas>
             <canvas id="julia-canvas"></canvas>
+            <canvas
+                bind:this={overlayCanvas}
+                id="mandelbrot-overlay"
+                class="absolute left-0 top-0 pointer-events-none"
+            ></canvas>
+            {#if hoverMouseY > 0}
+                <p
+                    class="absolute left-0 top-0 pointer-events-none text-[20px] px-2 rounded-md font-[math]"
+                    style={`transform: translate(${hoverMouseX + 6}px, ${hoverMouseY - 28}px); background-color: rgba(255, 255, 255, 0.75);`}
+                >
+                    c = {juliaX.toFixed(2)} + {juliaY.toFixed(2)}i
+                </p>
+            {/if}
         </div>
         <div class="controls">
             <label>
@@ -745,6 +852,11 @@
             On the left is the Mandelbrot set. Scroll to zoom in, click and drag
             to pan, and use the arrow keys to navigate.
         </p>
+        <p>
+            I also have a little music visualization based on the Julia set <a
+                href="/projects/webgpu-music">here</a
+            >
+        </p>
         <p>The relationship that creates all this complexity is</p>
         <div class="text-lg">
             <Eq
@@ -762,7 +874,8 @@
         <p>
             where <Eq tex={"c"} /> is a complex number and
             <Eq tex={"d"} /> is the exponent. Each point in the image is a different
-            value of <Eq tex={"c"} />.
+            value of <Eq tex={"c"} />. When you hover, the dots are the
+            progression of the specific point you're hovering over.
         </p>
         <p>
             On the right is the Julia set, a sister set of the Mandelbrot set.
