@@ -65,7 +65,11 @@
 
     const drawIterations = (juliaX, juliaY, mandelbrotIterations = 64) => {
         const mandelbrotOverlayContext = overlayCanvas?.getContext("2d");
-        if (!mandelbrotOverlayContext || !isHovering) {
+        if (!mandelbrotOverlayContext) {
+            return;
+        }
+        mandelbrotOverlayContext.clearRect(0, 0, width, height);
+        if (!isHovering) {
             return;
         }
 
@@ -81,8 +85,6 @@
             }
         }
 
-        mandelbrotOverlayContext.clearRect(0, 0, width, height);
-        // console.log(path);
         mandelbrotOverlayContext.strokeStyle = "#201080";
         mandelbrotOverlayContext.lineWidth = 2;
         mandelbrotOverlayContext.fillStyle = "#b0c880";
@@ -824,7 +826,7 @@
                 id="mandelbrot-overlay"
                 class="absolute left-0 top-0 pointer-events-none"
             ></canvas>
-            {#if hoverMouseY > 0}
+            {#if isHovering && hoverMouseY > 0}
                 <p
                     class="absolute left-0 top-0 pointer-events-none text-[20px] px-2 rounded-md font-[math]"
                     style={`transform: translate(${hoverMouseX + 6}px, ${hoverMouseY - 28}px); background-color: rgba(255, 255, 255, 0.75);`}
