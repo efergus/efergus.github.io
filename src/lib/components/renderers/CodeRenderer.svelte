@@ -1,8 +1,7 @@
-<script>
+<script lang="ts">
   import Code from "../Code.svelte";
 
-  export let lang;
-  export let text;
+  let { lang, text } = $props();
 </script>
 
 <Code {lang} source={text} />

@@ -4,6 +4,7 @@
   import spy from "$lib/assets/webgpu/gpu-spy-trace.png";
   import mandelbrot from "$lib/assets/mandelbrot/mandelbrot.png";
   import fluid from "$lib/assets/fluid/fluid.png";
+  import Link from "$lib/components/Link.svelte";
 </script>
 
 <h1 class="emphasize">Projects and Writeups</h1>
@@ -70,7 +71,7 @@
   >
     <p>
       An interactible Eulerian fluid simulation. For more info, take a look at
-      the <a href="https://github.com/efergus/Fluid">GitHub repo</a>.
+      the <Link href="https://github.com/efergus/Fluid">GitHub repo</Link>.
     </p>
     <img src={fluid} alt="Fluid Simulation" />
   </Project>
@@ -147,9 +148,11 @@
       in our lives. I'm especially interested in making something that shows you
       what's going on with different color spaces, so that's what this is. 3D
       representations of color spaces that function as color pickers, hopefully
-      even useful ones! It's still a WIP, but here's a link to the <a
-        href="https://github.com/efergus/burnt-umber">GitHub repo</a
+      even useful ones! It's still a WIP, but here's a link to the <Link
+        href="https://github.com/efergus/burnt-umber"
       >
+        GitHub repo
+      </Link>
     </p>
   </Project>
   <!-- TODO <Project

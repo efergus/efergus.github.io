@@ -1,12 +1,18 @@
-<script>
+<script lang="ts">
   import "../app.css";
   import "../style.css";
+  import "highlight.js/styles/atom-one-dark.css";
   import "$lib/markdown/markdown.css";
   import NavLink from "$lib/components/NavLink.svelte";
   import PageMenu from "$lib/components/PageMenu.svelte";
   import DarkModeButton from "$lib/components/DarkModeButton.svelte";
+  interface Props {
+    children?: import("svelte").Snippet;
+  }
 
-  let invert = false;
+  let { children }: Props = $props();
+
+  let invert = $state(false);
 </script>
 
 <svelte:head>
@@ -22,7 +28,9 @@
   </header>
   <div class="theme-focus sticky top-0 bg-secondary w-full z-40">
     <PageMenu>
-      <h2 slot="title">Ethan Ferguson</h2>
+      {#snippet title()}
+        <h2>Ethan Ferguson</h2>
+      {/snippet}
       <div
         class="bg-secondary flex flex-col md:flex-row flex-wrap px-8 pt-2 pb-3 gap-4"
       >
@@ -38,13 +46,13 @@
     </PageMenu>
   </div>
   <div class="w-full grow flex flex-col justify-center px-4 py-8">
-    <div class="grow-[1]" />
+    <div class="grow-[1]"></div>
     <div class="grow-[4] flex justify-center">
       <div class="max-w-full">
-        <slot />
+        {@render children?.()}
       </div>
     </div>
 
-    <div class="grow-[6]" />
+    <div class="grow-[6]"></div>
   </div>
 </div>

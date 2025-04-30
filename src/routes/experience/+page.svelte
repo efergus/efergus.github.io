@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import Markdown from "$lib/markdown/Markdown.svelte";
   import source from "$lib/markdown/experience.md?raw";
 </script>
 
@@ -8,7 +8,7 @@
 </svelte:head>
 
 <div class="text-lg max-w-4xl markdown experience">
-  <SvelteMarkdown {source} />
+  <Markdown {source} raw />
 </div>
 
 <style lang="postcss">

@@ -2,11 +2,23 @@
   import clsx from "clsx";
   import { onMount } from "svelte";
 
-  export let duration = 0.15;
-  export let adaptive = true;
-  export let open = false;
+  interface Props {
+    duration?: number;
+    adaptive?: boolean;
+    open?: boolean;
+    title?: import('svelte').Snippet;
+    children?: import('svelte').Snippet;
+  }
 
-  let label: HTMLLabelElement;
+  let {
+    duration = 0.15,
+    adaptive = true,
+    open = $bindable(false),
+    title,
+    children
+  }: Props = $props();
+
+  let label: HTMLLabelElement = $state();
 
   const listener = (e: Event) => {
     if (e?.currentTarget && !label.contains(e.target as Node)) {
@@ -31,7 +43,7 @@
   <input type="checkbox" class="menu hidden" bind:checked={open} />
   <div class="bar">
     <div class="title">
-      <slot name="title" />
+      {@render title?.()}
     </div>
     <svg
       style="--duration:{duration}"
@@ -53,14 +65,14 @@
   </div>
 
   <div class="relative">
-    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
     <div
       class={clsx("clip", {
         adaptive,
       })}
     >
       <div class="menu">
-        <slot />
+        {@render children?.()}
       </div>
     </div>
   </div>
