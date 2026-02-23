@@ -1,11 +1,17 @@
 <script lang="ts">
+  interface Props {
+    children?: import('svelte').Snippet;
+    button?: import('svelte').Snippet;
+  }
+
+  let { children, button }: Props = $props();
 </script>
 
 <div id="menu_bar">
   <label>
     <input type="checkbox" />
-    <div id="menu"><slot /></div>
-    <div><slot name="button">Toggle</slot></div>
+    <div id="menu">{@render children?.()}</div>
+    <div>{#if button}{@render button()}{:else}Toggle{/if}</div>
   </label>
 </div>
 

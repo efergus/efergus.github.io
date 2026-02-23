@@ -1,4 +1,6 @@
 <script>
+    import { run } from 'svelte/legacy';
+
     import Code from "$lib/components/Code.svelte";
     import Eq from "$lib/components/Eq.svelte";
     import { onMount, onDestroy } from "svelte";
@@ -10,29 +12,29 @@
     const size = Math.max(width, height);
 
     // Camera state
-    let scale = 3.0;
-    let offsetX = -0.7;
-    let offsetY = 0.0;
-    let exponent = 2.0;
+    let scale = $state(3.0);
+    let offsetX = $state(-0.7);
+    let offsetY = $state(0.0);
+    let exponent = $state(2.0);
     let isDragging = false;
-    let isHovering = false;
+    let isHovering = $state(false);
     let lastMouseX = 0;
     let lastMouseY = 0;
-    let hoverMouseX = 0;
-    let hoverMouseY = 0;
+    let hoverMouseX = $state(0);
+    let hoverMouseY = $state(0);
     let clickedMouseX = 0;
     let clickedMouseY = 0;
     let lastMandelbrotUpdate = 0;
     let lastJuliaUpdate = 0;
     let frameCount = 0;
     let frameLogTime = 0;
-    let juliaX = 0;
-    let juliaY = 0;
+    let juliaX = $state(0);
+    let juliaY = $state(0);
 
-    let webgpuSupported = true;
-    let webgpuError = "";
+    let webgpuSupported = $state(true);
+    let webgpuError = $state("");
 
-    let overlayCanvas;
+    let overlayCanvas = $state();
 
     const complexPow = ({ re, im }, n) => {
         if (n === 2) {
@@ -363,10 +365,10 @@
         };
     };
 
-    $: {
+    run(() => {
         juliaX = ((hoverMouseX - width / 2) * scale) / size + offsetX;
         juliaY = ((hoverMouseY - height / 2) * scale) / size + offsetY;
-    }
+    });
 
     let animationFrameId;
     async function init() {

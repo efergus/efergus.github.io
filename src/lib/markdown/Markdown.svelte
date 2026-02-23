@@ -1,15 +1,41 @@
 <script lang="ts">
-  import SvelteMarkdown from "svelte-markdown";
+  import { Marked } from "marked";
+  import { markedHighlight } from "marked-highlight";
   import hljs from "highlight.js";
   import { onMount } from "svelte";
 
-  export let source: string;
+  interface MarkdownProps {
+    source: string;
+    raw?: boolean;
+  }
 
-  onMount(() => {
-    hljs.highlightAll();
-  });
+  let { source, raw, ...rest }: MarkdownProps = $props();
+
+  const languages = new Map([
+    ["html", "xml"],
+    ["sh", "bash"],
+    ["svelte", "js"],
+  ]);
+
+  const marked = new Marked(
+    markedHighlight({
+      emptyLangClass: "hljs",
+      langPrefix: "hljs language-",
+      highlight(text, lang) {
+        if (!lang) {
+          return hljs.highlightAuto(text).value;
+        }
+        const language = languages.get(lang) || lang;
+        return hljs.highlight(text, { language }).value;
+      },
+    }),
+  );
 </script>
 
-<div class="markdown">
-  <SvelteMarkdown {source} />
-</div>
+{#if raw}
+  {@html marked.parse(source, { async: false })}
+{:else}
+  <div class="markdown" {...rest}>
+    {@html marked.parse(source, { async: false })}
+  </div>
+{/if}

@@ -13,7 +13,7 @@
     let offsetX = 0.0;
     let offsetY = 0.0;
     let exponent = 2.0;
-    let juliaAngle = 2.2; // Angle around the circle for c value
+    let juliaAngle = $state(2.2); // Angle around the circle for c value
     let baseRadius = 0.25; // Base radius for c value
     let audioRadius = 0.25; // Radius modified by audio
     let isDragging = false;
@@ -30,8 +30,8 @@
     let audioFrame = 0;
     let sampleRate = 44100;
 
-    let webgpuSupported = true;
-    let webgpuError = "";
+    let webgpuSupported = $state(true);
+    let webgpuError = $state("");
     let audioContext;
     let analyser;
     let microphoneStream;
@@ -39,8 +39,8 @@
     let timeData;
     let frequencyData;
     let previousFrequencyData;
-    let isListening = false;
-    let isPlaying = false;
+    let isListening = $state(false);
+    let isPlaying = $state(false);
     let audioSource;
     let audioElement;
 
@@ -732,7 +732,7 @@
                 <div class="button-group">
                     <button
                         class="control-button"
-                        on:click={() => {
+                        onclick={() => {
                             if (isListening) {
                                 stopAudio();
                             } else {
@@ -745,7 +745,7 @@
                     </button>
                     <button
                         class="control-button"
-                        on:click={() => {
+                        onclick={() => {
                             if (isPlaying) {
                                 stopAudioFile();
                             } else {

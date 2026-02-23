@@ -1,5 +1,5 @@
 <script>
-  let show = false;
+  let show = $state(false);
 
   let toggleMenu = () => {
     show = !show;
@@ -8,7 +8,7 @@
 
 <div id="menu_bar">
   <div id="menu" class={show ? "show" : ""}>Contents of the menu</div>
-  <button on:click={toggleMenu}>Toggle</button>
+  <button onclick={toggleMenu}>Toggle</button>
 </div>
 
 <style>

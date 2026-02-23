@@ -26,7 +26,9 @@
     <h1>No-JS Mobile Menu</h1>
     <div class="bg-secondary">
       <PageMenu adaptive={false}>
-        <h2 slot="title" class="ml-2">Example Mobile Menu</h2>
+        {#snippet title()}
+                <h2  class="ml-2">Example Mobile Menu</h2>
+              {/snippet}
         <div class="bg-secondary p-4">
           <p>Here is an example menu</p>
           <p>It has some contents</p>

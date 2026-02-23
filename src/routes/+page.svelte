@@ -9,9 +9,10 @@
 
   const email_domain = "gmail.com";
   const email_user = "ethanmferguson";
-  let email = email_domain + email_user;
-  $: email_ready = email.includes("@");
-  $: copied = false;
+  let email = $state(email_domain + email_user);
+  let email_ready = $derived(email.includes("@"));
+  let copied = $state(false);
+  
 
   const getEmail = () => {
     email = [email_user, email_domain].join("@");
@@ -64,7 +65,7 @@
         "flex items-center gap-4 rounded-md p-2 bg-subtle",
         email_ready && "hover:bg-subtle/75 border-primary"
       )}
-      on:click={() => {
+      onclick={() => {
         if (email_ready) {
           navigator.clipboard.writeText(email);
           copied = true;

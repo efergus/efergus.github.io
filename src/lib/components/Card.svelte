@@ -1,18 +1,30 @@
 <script lang="ts">
   import ExternalLink from "$lib/icons/external-link.svelte";
   import clsx from "clsx";
-  import ConditionalLink from "./ConditionalLink.svelte";
+  import ConditionalLink from "./Link.svelte";
+  import type { Snippet } from "svelte";
 
-  export let title: string = "";
-  export let subtitle: string = "";
-  export let link = "";
-  export let scroll = true;
+  interface Props {
+    title?: string;
+    subtitle?: string;
+    link?: string;
+    scroll?: boolean;
+    children?: Snippet;
+  }
+
+  let {
+    title = "",
+    subtitle = "",
+    link = "",
+    scroll = true,
+    children,
+  }: Props = $props();
 </script>
 
-<ConditionalLink {link} external={true}>
-  <div
-    class="flex flex-col border rounded-lg shadow px-4 py-2 h-full w-full gap-2"
-  >
+<div
+  class="flex flex-col border rounded-lg shadow px-4 py-2 h-full w-full gap-2"
+>
+  <ConditionalLink {link} external>
     {#if title || link || subtitle}
       <div>
         <div class="flex justify-between">
@@ -26,13 +38,13 @@
         {/if}
       </div>
     {/if}
-    <div
-      class={clsx(
-        "flex flex-col justify-start gap-3",
-        scroll ? "overflow-auto" : "overflow-visible"
-      )}
-    >
-      <slot />
-    </div>
+  </ConditionalLink>
+  <div
+    class={clsx(
+      "flex flex-col justify-start gap-3",
+      scroll ? "overflow-auto" : "overflow-visible",
+    )}
+  >
+    {@render children?.()}
   </div>
-</ConditionalLink>
+</div>

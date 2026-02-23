@@ -10,14 +10,18 @@
     };
   };
 
-  export let images: {
-    src: string;
-    alt?: string;
-    shape?: "portrait" | "square" | string;
-  }[] = [];
+  interface Props {
+    images?: {
+      src: string;
+      alt?: string;
+      shape?: "portrait" | "square" | string;
+    }[];
+  }
 
-  let gallery: HTMLDivElement;
-  let selected: Selected | null = null;
+  let { images = [] }: Props = $props();
+
+  let gallery: HTMLDivElement | undefined = $state();
+  let selected: Selected | null = $state(null);
 
   const onClick = (index: number) => (event: MouseEvent) => {
     if (index === selected?.index) {
@@ -52,7 +56,7 @@
   };
 
   const listener = (e: Event) => {
-    if (e?.currentTarget && !gallery.contains(e.target as Node)) {
+    if (e?.currentTarget && !gallery?.contains(e.target as Node)) {
       selected = null;
     }
   };
@@ -71,7 +75,7 @@
   {#each images as image, idx}
     <button
       class="transition-transform drop-shadow lg:hover:scale-105 hover:z-10"
-      on:click={onClick(idx)}
+      onclick={onClick(idx)}
       style={idx === selected?.index ? getStyle(selected) : ""}
     >
       <img
