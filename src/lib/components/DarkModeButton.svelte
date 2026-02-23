@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
+  import { run } from "svelte/legacy";
 
   import Moon from "$lib/icons/Moon.svelte";
   import clsx from "clsx";
@@ -10,21 +10,20 @@
   }
 
   let { checked = $bindable(false), color = undefined }: Props = $props();
-  let colorClass = $state("");
-  run(() => {
-    colorClass = "fill-contrast stroke-contrast";
+  let colorClass = $derived.by(() => {
     if (color === "white") {
-      colorClass = "fill-white stroke-white";
+      return "fill-white stroke-white";
     } else if (color === "black") {
-      colorClass = "fill-black stroke-black";
+      return "fill-black stroke-black";
     }
+    return "fill-contrast stroke-contrast";
   });
 </script>
 
 <label
   class={clsx(
     colorClass,
-    "hover:bg-secondary h-fit p-1 rounded-lg cursor-pointer"
+    "hover:bg-secondary h-fit p-1 rounded-lg cursor-pointer",
   )}
 >
   <input type="checkbox" class="hidden dark-mode-toggle" bind:checked />

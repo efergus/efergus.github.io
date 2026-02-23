@@ -12,15 +12,15 @@
 
   interface Props {
     images?: {
-    src: string;
-    alt?: string;
-    shape?: "portrait" | "square" | string;
-  }[];
+      src: string;
+      alt?: string;
+      shape?: "portrait" | "square" | string;
+    }[];
   }
 
   let { images = [] }: Props = $props();
 
-  let gallery: HTMLDivElement = $state();
+  let gallery: HTMLDivElement | undefined = $state();
   let selected: Selected | null = $state(null);
 
   const onClick = (index: number) => (event: MouseEvent) => {
@@ -56,7 +56,7 @@
   };
 
   const listener = (e: Event) => {
-    if (e?.currentTarget && !gallery.contains(e.target as Node)) {
+    if (e?.currentTarget && !gallery?.contains(e.target as Node)) {
       selected = null;
     }
   };

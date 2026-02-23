@@ -144,7 +144,7 @@
       means it will be pretty responsive compared to a JS implementation that
       has to run on the main thread. My favorite part, though, is that it's just
       a great way to set up theming, even if you don't have a need for the
-      CSS-inly dark mode selector. And at the end of the day, isn't that what
+      CSS-only dark mode selector. And at the end of the day, isn't that what
       we're all dreaming of? ...right?
     </p>
     <h2>P.S. - JS Fallback</h2>
