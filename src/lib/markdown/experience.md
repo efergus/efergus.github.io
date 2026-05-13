@@ -1,10 +1,20 @@
 ## Employers
 
+### Meta
+
+**Security Engineer**
+
+*September 2025 - Present*
+
+- Developing novel security solutions for large-scale distributed systems.
+- Contributing to Meta's robust security infrastructure and ongoing security research.
+- Developed infrastructure to monitor and manage >100k user accounts.
+
 ### Jahnel Group
 
 **Software Engineer**
 
-*June 2023 - Present*
+*June 2023 - August 2025*
 
 - Engineered secure, performant cloud applications using TypeScript, React, SQL,
   NodeJS, AWS, and Google Cloud.

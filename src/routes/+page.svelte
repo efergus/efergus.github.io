@@ -12,7 +12,6 @@
   let email = $state(email_domain + email_user);
   let email_ready = $derived(email.includes("@"));
   let copied = $state(false);
-  
 
   const getEmail = () => {
     email = [email_user, email_domain].join("@");
@@ -28,12 +27,13 @@
     </a>
   </div>
   <p>
-    I'm a Software Engineer at Jahnel Group. I studied CS and Cybersecurity at
+    I'm a Security Engineer at Meta. I studied CS and Cybersecurity at
     Binghamton University. I have published and presented at ACM (Association
     for Computing Machinery) and IEEE (Institute of Electrical and Electronics
-    Engineers) conferences. I've also worked for CodeSecure and Sonnet Software,
-    and I love working on interesting projects. If you've got something cool for
-    me to do, let's connect! While you're here, check out some of my
+    Engineers) conferences. I've also worked for Jahnel Group, GrammaTech, and
+    Sonnet Software, and I love working on interesting problems. If you've got
+    something cool for me to do, let's connect! While you're here, check out
+    some of my
     <a href="/projects">projects</a>!
   </p>
   <!-- <p>
@@ -63,7 +63,7 @@
     <button
       class={clsx(
         "flex items-center gap-4 rounded-md p-2 bg-subtle",
-        email_ready && "hover:bg-subtle/75 border-primary"
+        email_ready && "hover:bg-subtle/75 border-primary",
       )}
       onclick={() => {
         if (email_ready) {
@@ -81,7 +81,7 @@
             class={clsx(
               "transition-opacity md:text-base ml-1",
               email_ready ? "opacity-100" : "opacity-0",
-              copied && "animate-peeked"
+              copied && "animate-peeked",
             )}
           >
             {email}
